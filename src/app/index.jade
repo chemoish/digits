@@ -1,0 +1,29 @@
+!!! 5
+| <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="app"> <![endif]-->
+| <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="app"> <![endif]-->
+| <!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="app"> <![endif]-->
+| <!--[if gt IE 8]><!--> <html class="no-js" ng-app="app"> <!--<![endif]-->
+head
+  meta(charset="utf-8")
+  meta(http-equiv="X-UA-Compatible", content="IE=edge")
+  title Size Me Up
+  meta(name="description", content="")
+  meta(name="viewport", content="width=device-width, initial-scale=1")
+
+  //- Place favicon.ico and apple-touch-icon.png in the root directory
+
+  link(rel="stylesheet", href="style/vendor.css")
+  link(rel="stylesheet", href="style/app.css")
+
+  script(src="script/modernizr.js")
+
+body
+  ng-include(src="'shared/layout/main/_header.html'")
+
+  | I love pink!
+
+  ng-include(src="'shared/layout/main/_footer.html'")
+
+  script(src='script/vendor.js')
+  script(src='script/app.js')
+</html>

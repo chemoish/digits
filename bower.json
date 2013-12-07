@@ -1,0 +1,12 @@
+{
+  "name": "size-me-up",
+  "version": "0.0.1",
+  "dependencies": {
+    "angular": "*",
+    "font-awesome": "*",
+    "foundation": "*",
+    "html5-boilerplate": "*",
+    "jquery": "*",
+    "modernizr": "*"
+  }
+}
