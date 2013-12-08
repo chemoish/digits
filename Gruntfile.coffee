@@ -9,6 +9,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-stylus'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
+  grunt.loadNpmTasks 'grunt-gh-pages'
 
   grunt.initConfig
     pkg: grunt.file.readJSON 'package.json'
@@ -129,7 +130,7 @@ module.exports = (grunt) ->
     'gh-pages':
       docs:
         options:
-          base: 'tmp/doc'
+          base: 'dist'
         src: [
           '**'
         ]
@@ -183,6 +184,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask 'build:dev', 'Running development tasks...', [
+    'clean:dev'
     'coffee:dev'
     'jade:dev'
     'ngtemplates:app'
@@ -193,6 +195,7 @@ module.exports = (grunt) ->
   ]
 
   grunt.registerTask 'build:prod', 'Running production tasks...', [
+    'clean:dev'
     'coffee:dev'
     'jade:prod'
     'ngtemplates:app'
@@ -201,4 +204,9 @@ module.exports = (grunt) ->
     'concat:scripts'
     'copy:dev'
     'uglify:prod'
+  ]
+
+  grunt.registerTask 'pages', 'Running pages tasks...', [
+    'build:dev'
+    'gh-pages'
   ]
