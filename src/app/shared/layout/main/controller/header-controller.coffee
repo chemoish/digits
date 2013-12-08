@@ -1,4 +1,4 @@
-angular.module('app').controller 'headerController', [
+angular.module('app').controller 'HeaderController', [
   '$scope'
   (
     $scope

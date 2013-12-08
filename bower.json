@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular": "*",
+    "angular-route": "*",
     "font-awesome": "*",
     "foundation": "*",
     "html5-boilerplate": "*",

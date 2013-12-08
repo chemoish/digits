@@ -1,0 +1,27 @@
+.nav(ng-controller="navigationController")
+  aside.left-off-canvas-menu
+    ul.off-canvas-list
+      li
+        a(href="#")
+          i.fa.fa-home
+          | &nbsp;
+          | Home
+
+      li
+        a(href="#add-profile")
+          i.fa.fa-plus-square
+          | &nbsp;
+          | Profile
+
+      li
+        label Profiles
+
+      li(
+        ng-repeat="profile in profiles"
+      )
+        a(href="#profile/{{profile.id}}")
+          i.fa(
+            ng-class="{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}"
+          )
+          | &nbsp;
+          | {{profile.name}}

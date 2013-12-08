@@ -1,4 +1,11 @@
 header(
-  ng-controller="headerController"
+  ng-controller="HeaderController"
 )
-  | {{title}}
+  nav.tab-bar
+    section.left-small
+      a.left-off-canvas-toggle.menu-icon
+        span
+
+    section.right.tab-bar-section
+      h1
+        a#brand(href="/") {{title}}

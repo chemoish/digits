@@ -18,11 +18,18 @@ head
   script(src="script/modernizr.js")
 
 body
-  ng-include(src="'shared/layout/main/_header.html'")
+  #container.off-canvas-wrap
+    .inner-wrap
+      ng-include(src="'shared/layout/main/_header.html'")
 
-  | I love pink!
+      ng-include(src="'navigation/_navigation.html'")
 
-  ng-include(src="'shared/layout/main/_footer.html'")
+      section#main.main-section
+        ng-view
+
+      ng-include(src="'shared/layout/main/_footer.html'")
+
+      a.exit-off-canvas
 
   script(src='script/vendor.js')
   script(src='script/app.js')
