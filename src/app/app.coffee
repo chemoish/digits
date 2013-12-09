@@ -8,7 +8,11 @@ angular.module 'app', ['ngRoute'], ($routeProvider, $locationProvider) ->
       templateUrl: 'profile/profile-add.html'
       controller: 'ProfileAddController'
     ).
-    when('/profile/:profileId'
+    when('/edit-profile/:id'
+      templateUrl: 'profile/profile-edit.html'
+      controller: 'ProfileEditController'
+    ).
+    when('/profile/:id'
       templateUrl: 'profile/profile-detail.html'
       controller: 'ProfileDetailController'
     ).

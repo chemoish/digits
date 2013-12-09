@@ -3,6 +3,20 @@ angular.module('app').service 'ProfileService', [
   (
     $filter
   ) ->
+    getProfiles = ->
+      # get profiles
+      json_profiles = localStorage.getItem 'profiles'
+
+      # convert from json
+      profiles = JSON.parse json_profiles
+
+    saveProfiles = (profiles) ->
+      # convert to json
+      json_profiles = JSON.stringify profiles
+
+      # store profile
+      localStorage.setItem 'profiles', json_profiles
+
     @createProfile = (profile) ->
       profiles = @getProfiles()
 
@@ -21,31 +35,51 @@ angular.module('app').service 'ProfileService', [
 
       profiles.push profile
 
-      # convert to json
-      json_profiles = JSON.stringify profiles
-
-      # store profile
-      localStorage.setItem 'profiles', json_profiles
+      saveProfiles profiles
 
       return profile
 
-    @editProfile = (profile) ->
-      console.log 'edit profile', profile
+    @editProfile = (new_profile) ->
+      profile = {}
+
+      old_profile = @getProfileById new_profile.id
+
+      _.extend profile, old_profile, new_profile
+
+      profiles = @getProfiles()
+      ids = _.pluck profiles, 'id'
+      profile_index = _.indexOf ids, profile.id
+
+      profiles[profile_index] = profile
+
+      saveProfiles profiles
+
+      return profile
+
+    @deleteProfile = (profile) ->
+      @deleteProfileById profile.id
+
+      profiles = @getProfiles()
+      ids = _.pluck profiles, 'id'
+      profile_index = _.indexOf ids, profile.id
+
+      delete profiles[profile_index]
+
+      saveProfiles profiles
+
+      return profiles
 
     @deleteProfileById = (id) ->
-      console.log 'delete profile', id
+      profile = @getProfileById()
 
     @getProfileById = (id) ->
-      console.log 'get profile by id', id
+      profiles = @getProfiles()
+
+      _.findWhere profiles,
+        id: parseInt id
 
     @getProfiles = ->
-      console.log 'get profiles~'
-
-      # get profiles
-      json_profiles = localStorage.getItem('profiles')
-
-      # convert from json
-      profiles = JSON.parse(json_profiles)
+      profiles = getProfiles()
 
       return profiles || []
 

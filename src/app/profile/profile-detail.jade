@@ -1,109 +1,51 @@
 .row
   .small-12.columns
-    h1 Profile <small>Spouse</small>
+    a.button.tiny.right(
+      href="#edit-profile/{{profile.id}}"
+    ) Edit
+
+    h1 Profile <small>{{profile.name}}</small>
+
+    .panel
+      p {{profile.description}}
 
 .row
-  .small-4.columns
-    label.right.inline Overall
+  .small-6.columns
+    label Overall
 
-  .small-4.columns
-  .small-4.columns
     select
       option(value="small") S
       option(value="medium") M
 
-.row
-  .small-4.columns
-    label.right.inline Bust
+    label Bust
 
-  .small-4.columns
     input(type="text", placeholder="Bust")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Waist
 
-.row
-  .small-4.columns
-    label.right.inline Waist
-
-  .small-4.columns
     input(type="text", placeholder="Waist")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Hip
 
-.row
-  .small-4.columns
-    label.right.inline Hip
-
-  .small-4.columns
     input(type="text", placeholder="Hip")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Inseam
 
-.row
-  .small-4.columns
-    label.right.inline Inseam
-
-  .small-4.columns
     input(type="text", placeholder="Inseam")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Height
 
-.row
-  .small-4.columns
-    label.right.inline Height
-
-  .small-4.columns
     input(type="text", placeholder="Height")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+  .small-6.columns
+    label Ring
 
-.row
-  .small-4.columns
-    label.right.inline Ring
-
-  .small-4.columns
     input(type="text", placeholder="Ring")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Bracelet
 
-.row
-  .small-4.columns
-    label.right.inline Bracelet
-
-  .small-4.columns
     input(type="text", placeholder="Bracelet")
 
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
+    label Shoe
 
-.row
-  .small-4.columns
-    label.right.inline Shoe
-
-  .small-4.columns
     input(type="text", placeholder="Shoe")
-
-  .small-4.columns
-    select
-      option(value="small") S
-      option(value="medium") M
