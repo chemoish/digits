@@ -7,40 +7,33 @@
     div(style="height: 200px; background-color: #666")
       | img or something
 
-    .panel
-      ul
-        li
-          i.fa.fa-mobile
-          | &nbsp;
-          | Mobile compatible
-
-        li
-          i.fa.fa-desktop
-          | &nbsp;
-          | Desktop compatible
-
-        li
-          i.fa.fa-book
-          | &nbsp;
-          | Man's best friend
-
   .small-8.columns
     form(
       id="profile_add_form"
       name="profile_add_form"
+      novalidate
+      ng-submit="saveProfile()"
     )
       .row
-        .small-12.columns
+        .small-12.columns(
+          ng-class="{'error': hasFieldError('name')}"
+        )
           label(
-            for="profile_add_name"
+            for="name"
           ) Name <small>required</small>
 
           input(
             id="profile_add_name"
-            name="profile_add_name"
+            name="name"
             placeholder="Name"
+            required
             type="text"
+            ng-model="profile.name"
           )
+
+          small.error(
+            ng-show="hasFieldError('name')"
+          ) Please enter a name
 
       .row
         .small-12.columns
@@ -52,6 +45,7 @@
             id="profile_add_description"
             name="profile_add_description"
             placeholder="Description"
+            ng-model="profile.description"
           )
 
       .row
@@ -60,27 +54,36 @@
 
           input(
             id="profile_add_gender_male"
-            name="profile_add_gender"
+            name="gender"
+            required
             type="radio"
             value="male"
+            ng-model="profile.gender"
           )
 
           label(
             for="profile_add_gender_male"
+            ng-class="{'error': hasFieldError('gender')}"
           ) Male
 
           input(
             id="profile_add_gender_female"
-            name="profile_add_gender"
+            name="gender"
+            required
             type="radio"
             value="female"
+            ng-model="profile.gender"
           )
 
           label(
             for="profile_add_gender_female"
+            ng-class="{'error': hasFieldError('gender')}"
           ) Female
 
       .row
         .small-12.columns
-          button.button.tiny(type="submit") Save
-          button.button.secondary.tiny(type="submit") Cancel
+          button.button.tiny(
+            type="submit"
+          ) Save
+
+          button.button.secondary.tiny(type="reset") Reset

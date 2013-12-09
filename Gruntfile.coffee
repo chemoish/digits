@@ -86,6 +86,7 @@ module.exports = (grunt) ->
             'vendor/bower/jQuery/jquery.js'
             'vendor/bower/angular/angular.js'
             'vendor/bower/angular-route/angular-route.js'
+            'vendor/bower/underscore/underscore.js'
             'vendor/bower/foundation/js/foundation.js'
           ]
         ]

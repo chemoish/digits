@@ -1,19 +1,11 @@
 angular.module('app').controller 'navigationController', [
+  '$filter'
   '$scope'
+  'ProfileService'
   (
+    $filter
     $scope
+    ProfileService
   ) ->
-    $scope.profiles = [
-      id:     1
-      gender: 'female'
-      name:   'Spouse'
-    ,
-      id:     2
-      gender: 'female'
-      name:   'Mom'
-    ,
-      id:     3
-      gender: 'male'
-      name:   'Dad'
-    ]
+    $scope.profiles = $filter('orderBy')(ProfileService.getProfiles(), 'name')
 ]

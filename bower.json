@@ -8,6 +8,7 @@
     "foundation": "*",
     "html5-boilerplate": "*",
     "jquery": "*",
-    "modernizr": "*"
+    "modernizr": "*",
+    "underscore": "*"
   }
 }
