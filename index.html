@@ -1,0 +1,28 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" ng-app="app"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" ng-app="app"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" ng-app="app"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="app"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Size Me Up</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style/vendor.css">
+  <link rel="stylesheet" href="style/app.css">
+  <script src="script/modernizr.js"></script>
+</head>
+<body>
+  <div id="container" class="off-canvas-wrap">
+    <div class="inner-wrap">
+      <ng-include src="'shared/layout/main/_header.html'"></ng-include>
+      <ng-include src="'navigation/_navigation.html'"></ng-include>
+      <section id="main" class="main-section">
+        <ng-view></ng-view>
+      </section>
+      <ng-include src="'shared/layout/main/_footer.html'"></ng-include><a class="exit-off-canvas"></a>
+    </div>
+  </div>
+  <script src="script/vendor.js"></script>
+  <script src="script/app.js"></script>
+</body></html>
