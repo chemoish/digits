@@ -6,7 +6,10 @@
     }).when('/add-profile', {
       templateUrl: 'profile/profile-add.html',
       controller: 'ProfileAddController'
-    }).when('/profile/:profileId', {
+    }).when('/edit-profile/:id', {
+      templateUrl: 'profile/profile-edit.html',
+      controller: 'ProfileEditController'
+    }).when('/profile/:id', {
       templateUrl: 'profile/profile-detail.html',
       controller: 'ProfileDetailController'
     }).otherwise({
@@ -56,15 +59,54 @@
 }).call(this);
 
 (function() {
-  angular.module('app').controller('ProfileDetailController', ['$scope', function($scope) {}]);
+  angular.module('app').controller('ProfileDetailController', [
+    '$routeParams', '$scope', 'ProfileService', function($routeParams, $scope, ProfileService) {
+      return $scope.profile = ProfileService.getProfileById($routeParams.id);
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('app').controller('ProfileEditController', [
+    '$location', '$routeParams', '$scope', 'ProfileService', function($location, $routeParams, $scope, ProfileService) {
+      $scope.isProfileAddFormSubmitted = false;
+      $scope.profile = ProfileService.getProfileById($routeParams.id);
+      $scope.deleteProfile = function() {
+        ProfileService.deleteProfile($scope.profile);
+        return $location.path("/");
+      };
+      $scope.hasFieldError = function(field) {
+        return $scope.isProfileAddFormSubmitted && $scope.profile_add_form[field].$error.required;
+      };
+      return $scope.saveProfile = function() {
+        $scope.isProfileAddFormSubmitted = true;
+        if (!$scope.profile_add_form.$valid) {
+          return;
+        }
+        return ProfileService.editProfile($scope.profile);
+      };
+    }
+  ]);
 
 }).call(this);
 
 (function() {
   angular.module('app').service('ProfileService', [
     '$filter', function($filter) {
+      var getProfiles, saveProfiles;
+      getProfiles = function() {
+        var json_profiles, profiles;
+        json_profiles = localStorage.getItem('profiles');
+        return profiles = JSON.parse(json_profiles);
+      };
+      saveProfiles = function(profiles) {
+        var json_profiles;
+        json_profiles = JSON.stringify(profiles);
+        return localStorage.setItem('profiles', json_profiles);
+      };
       this.createProfile = function(profile) {
-        var json_profiles, max_id, new_id, profiles;
+        var max_id, new_id, profiles;
         profiles = this.getProfiles();
         max_id = _.max(_.pluck(profiles, 'id'));
         new_id = max_id === Number.NEGATIVE_INFINITY ? 1 : max_id + 1;
@@ -75,24 +117,45 @@
           gender: profile.gender
         };
         profiles.push(profile);
-        json_profiles = JSON.stringify(profiles);
-        localStorage.setItem('profiles', json_profiles);
+        saveProfiles(profiles);
         return profile;
       };
-      this.editProfile = function(profile) {
-        return console.log('edit profile', profile);
+      this.editProfile = function(new_profile) {
+        var ids, old_profile, profile, profile_index, profiles;
+        profile = {};
+        old_profile = this.getProfileById(new_profile.id);
+        _.extend(profile, old_profile, new_profile);
+        profiles = this.getProfiles();
+        ids = _.pluck(profiles, 'id');
+        profile_index = _.indexOf(ids, profile.id);
+        profiles[profile_index] = profile;
+        saveProfiles(profiles);
+        return profile;
+      };
+      this.deleteProfile = function(profile) {
+        var ids, profile_index, profiles;
+        this.deleteProfileById(profile.id);
+        profiles = this.getProfiles();
+        ids = _.pluck(profiles, 'id');
+        profile_index = _.indexOf(ids, profile.id);
+        delete profiles[profile_index];
+        saveProfiles(profiles);
+        return profiles;
       };
       this.deleteProfileById = function(id) {
-        return console.log('delete profile', id);
+        var profile;
+        return profile = this.getProfileById();
       };
       this.getProfileById = function(id) {
-        return console.log('get profile by id', id);
+        var profiles;
+        profiles = this.getProfiles();
+        return _.findWhere(profiles, {
+          id: parseInt(id)
+        });
       };
       this.getProfiles = function() {
-        var json_profiles, profiles;
-        console.log('get profiles~');
-        json_profiles = localStorage.getItem('profiles');
-        profiles = JSON.parse(json_profiles);
+        var profiles;
+        profiles = getProfiles();
         return profiles || [];
       };
       return this;
@@ -225,132 +288,84 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('profile/profile-detail.html',
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\">\n" +
-    "    <h1>Profile <small>Spouse</small></h1>\n" +
+    "  <div class=\"small-12 columns\"><a href=\"#edit-profile/{{profile.id}}\" class=\"button tiny right\">Edit</a>\n" +
+    "    <h1>Profile <small>{{profile.name}}</small></h1>\n" +
+    "    <div class=\"panel\">\n" +
+    "      <p>{{profile.description}}</p>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Overall</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\"></div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "  <div class=\"small-6 columns\">\n" +
+    "    <label>Overall</label>\n" +
     "    <select>\n" +
     "      <option value=\"small\">S</option>\n" +
     "      <option value=\"medium\">M</option>\n" +
     "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Bust</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Bust</label>\n" +
     "    <input type=\"text\" placeholder=\"Bust\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Waist</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Waist</label>\n" +
     "    <input type=\"text\" placeholder=\"Waist\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Hip</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Hip</label>\n" +
     "    <input type=\"text\" placeholder=\"Hip\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Inseam</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Inseam</label>\n" +
     "    <input type=\"text\" placeholder=\"Inseam\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Height</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Height</label>\n" +
     "    <input type=\"text\" placeholder=\"Height\"/>\n" +
     "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Ring</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "  <div class=\"small-6 columns\">\n" +
+    "    <label>Ring</label>\n" +
     "    <input type=\"text\" placeholder=\"Ring\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Bracelet</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Bracelet</label>\n" +
     "    <input type=\"text\" placeholder=\"Bracelet\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <label class=\"right inline\">Shoe</label>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "    <label>Shoe</label>\n" +
     "    <input type=\"text\" placeholder=\"Shoe\"/>\n" +
     "  </div>\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('profile/profile-edit.html',
+    "\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"small-12 columns\">\n" +
+    "    <button ng-click=\"deleteProfile()\" class=\"button alert tiny right\">Delete</button>\n" +
+    "    <h1>Edit Profile <small>{{profile.name}}</small></h1>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "<div class=\"row\">\n" +
     "  <div class=\"small-4 columns\">\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
+    "    <div style=\"height: 200px; background-color: #666\">img or something</div>\n" +
+    "  </div>\n" +
+    "  <div class=\"small-8 columns\">\n" +
+    "    <form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
+    "      <div class=\"row\">\n" +
+    "        <div ng-class=\"{'error': hasFieldError('name')}\" class=\"small-12 columns\">\n" +
+    "          <label for=\"name\">Name <small>required</small></label>\n" +
+    "          <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"small-12 columns\">\n" +
+    "          <label for=\"profile_add_description\">Description</label>\n" +
+    "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"small-12 columns\">\n" +
+    "          <label>Gender <small>required</small></label>\n" +
+    "          <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
+    "          <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
+    "          <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
+    "          <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "      <div class=\"row\">\n" +
+    "        <div class=\"small-12 columns\">\n" +
+    "          <button type=\"submit\" class=\"button tiny\">Save</button><a href=\"#profile/{{profile.id}}\" class=\"button secondary tiny\">Cancel</a>\n" +
+    "        </div>\n" +
+    "      </div>\n" +
+    "    </form>\n" +
     "  </div>\n" +
     "</div>"
   );
