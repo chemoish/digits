@@ -25,34 +25,79 @@
 
 (function() {
   angular.module('app').controller('navigationController', [
-    '$scope', function($scope) {
-      return $scope.profiles = [
-        {
-          id: 1,
-          gender: 'female',
-          name: 'Spouse'
-        }, {
-          id: 2,
-          gender: 'female',
-          name: 'Mom'
-        }, {
-          id: 3,
-          gender: 'male',
-          name: 'Dad'
-        }
-      ];
+    '$filter', '$scope', 'ProfileService', function($filter, $scope, ProfileService) {
+      return $scope.profiles = $filter('orderBy')(ProfileService.getProfiles(), 'name');
     }
   ]);
 
 }).call(this);
 
 (function() {
-  angular.module('app').controller('ProfileAddController', ['$scope', function($scope) {}]);
+  angular.module('app').controller('ProfileAddController', [
+    '$location', '$scope', 'ProfileService', function($location, $scope, ProfileService) {
+      $scope.isProfileAddFormSubmitted = false;
+      $scope.profile = null;
+      $scope.hasFieldError = function(field) {
+        return $scope.isProfileAddFormSubmitted && $scope.profile_add_form[field].$error.required;
+      };
+      return $scope.saveProfile = function() {
+        var profile;
+        $scope.isProfileAddFormSubmitted = true;
+        if (!$scope.profile_add_form.$valid) {
+          return;
+        }
+        profile = ProfileService.createProfile($scope.profile);
+        $scope.profile = null;
+        return $location.path("/profile/" + profile.id);
+      };
+    }
+  ]);
 
 }).call(this);
 
 (function() {
   angular.module('app').controller('ProfileDetailController', ['$scope', function($scope) {}]);
+
+}).call(this);
+
+(function() {
+  angular.module('app').service('ProfileService', [
+    '$filter', function($filter) {
+      this.createProfile = function(profile) {
+        var json_profiles, max_id, new_id, profiles;
+        profiles = this.getProfiles();
+        max_id = _.max(_.pluck(profiles, 'id'));
+        new_id = max_id === Number.NEGATIVE_INFINITY ? 1 : max_id + 1;
+        profile = {
+          id: new_id,
+          name: profile.name,
+          description: profile.description,
+          gender: profile.gender
+        };
+        profiles.push(profile);
+        json_profiles = JSON.stringify(profiles);
+        localStorage.setItem('profiles', json_profiles);
+        return profile;
+      };
+      this.editProfile = function(profile) {
+        return console.log('edit profile', profile);
+      };
+      this.deleteProfileById = function(id) {
+        return console.log('delete profile', id);
+      };
+      this.getProfileById = function(id) {
+        return console.log('get profile by id', id);
+      };
+      this.getProfiles = function() {
+        var json_profiles, profiles;
+        console.log('get profiles~');
+        json_profiles = localStorage.getItem('profiles');
+        profiles = JSON.parse(json_profiles);
+        return profiles || [];
+      };
+      return this;
+    }
+  ]);
 
 }).call(this);
 
@@ -82,6 +127,17 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "    <section class=\"panel\">\n" +
     "      <h2>Section 1</h2>\n" +
     "      <p>Section Content</p>\n" +
+    "      <ul>\n" +
+    "        <li><i class=\"fa fa-mobile\"></i>&nbsp;\n" +
+    "          Mobile compatible\n" +
+    "        </li>\n" +
+    "        <li><i class=\"fa fa-desktop\"></i>&nbsp;\n" +
+    "          Desktop compatible\n" +
+    "        </li>\n" +
+    "        <li><i class=\"fa fa-book\"></i>&nbsp;\n" +
+    "          Man's best friend\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
     "    </section>\n" +
     "  </div>\n" +
     "  <div class=\"small-4 columns\">\n" +
@@ -130,47 +186,34 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "<div class=\"row\">\n" +
     "  <div class=\"small-4 columns\">\n" +
     "    <div style=\"height: 200px; background-color: #666\">img or something</div>\n" +
-    "    <div class=\"panel\">\n" +
-    "      <ul>\n" +
-    "        <li><i class=\"fa fa-mobile\"></i>&nbsp;\n" +
-    "          Mobile compatible\n" +
-    "        </li>\n" +
-    "        <li><i class=\"fa fa-desktop\"></i>&nbsp;\n" +
-    "          Desktop compatible\n" +
-    "        </li>\n" +
-    "        <li><i class=\"fa fa-book\"></i>&nbsp;\n" +
-    "          Man's best friend\n" +
-    "        </li>\n" +
-    "      </ul>\n" +
-    "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"small-8 columns\">\n" +
-    "    <form id=\"profile_add_form\" name=\"profile_add_form\">\n" +
+    "    <form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
     "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <label for=\"profile_add_name\">Name <small>required</small></label>\n" +
-    "          <input id=\"profile_add_name\" name=\"profile_add_name\" placeholder=\"Name\" type=\"text\"/>\n" +
+    "        <div ng-class=\"{'error': hasFieldError('name')}\" class=\"small-12 columns\">\n" +
+    "          <label for=\"name\">Name <small>required</small></label>\n" +
+    "          <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"small-12 columns\">\n" +
     "          <label for=\"profile_add_description\">Description</label>\n" +
-    "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\"></textarea>\n" +
+    "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"small-12 columns\">\n" +
     "          <label>Gender <small>required</small></label>\n" +
-    "          <input id=\"profile_add_gender_male\" name=\"profile_add_gender\" type=\"radio\" value=\"male\"/>\n" +
-    "          <label for=\"profile_add_gender_male\">Male</label>\n" +
-    "          <input id=\"profile_add_gender_female\" name=\"profile_add_gender\" type=\"radio\" value=\"female\"/>\n" +
-    "          <label for=\"profile_add_gender_female\">Female</label>\n" +
+    "          <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
+    "          <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
+    "          <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
+    "          <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"small-12 columns\">\n" +
     "          <button type=\"submit\" class=\"button tiny\">Save</button>\n" +
-    "          <button type=\"submit\" class=\"button secondary tiny\">Cancel</button>\n" +
+    "          <button type=\"reset\" class=\"button secondary tiny\">Reset</button>\n" +
     "        </div>\n" +
     "      </div>\n" +
     "    </form>\n" +
