@@ -93,32 +93,20 @@
 
 (function() {
   angular.module('app').service('ProfileService', [
-    '$filter', function($filter) {
-      var getProfiles, saveProfiles;
-      getProfiles = function() {
-        var json_profiles, profiles;
-        json_profiles = localStorage.getItem('profiles');
-        return profiles = JSON.parse(json_profiles);
-      };
-      saveProfiles = function(profiles) {
-        var json_profiles;
-        json_profiles = JSON.stringify(profiles);
-        return localStorage.setItem('profiles', json_profiles);
-      };
+    'StoreService', function(StoreService) {
       this.createProfile = function(profile) {
-        var max_id, new_id, profiles;
+        var new_profile, profiles, slug;
         profiles = this.getProfiles();
-        max_id = _.max(_.pluck(profiles, 'id'));
-        new_id = max_id === Number.NEGATIVE_INFINITY ? 1 : max_id + 1;
-        profile = {
-          id: new_id,
+        slug = StoreService.generateSlug(profile.name);
+        new_profile = {
+          id: slug,
           name: profile.name,
           description: profile.description,
           gender: profile.gender
         };
-        profiles.push(profile);
-        saveProfiles(profiles);
-        return profile;
+        profiles.push(new_profile);
+        StoreService.set('profiles', profiles);
+        return new_profile;
       };
       this.editProfile = function(new_profile) {
         var ids, old_profile, profile, profile_index, profiles;
@@ -129,7 +117,7 @@
         ids = _.pluck(profiles, 'id');
         profile_index = _.indexOf(ids, profile.id);
         profiles[profile_index] = profile;
-        saveProfiles(profiles);
+        StoreService.set('profiles', profiles);
         return profile;
       };
       this.deleteProfile = function(profile) {
@@ -138,8 +126,8 @@
         profiles = this.getProfiles();
         ids = _.pluck(profiles, 'id');
         profile_index = _.indexOf(ids, profile.id);
-        delete profiles[profile_index];
-        saveProfiles(profiles);
+        profiles.splice(profile_index, 1);
+        StoreService.set('profiles', profiles);
         return profiles;
       };
       this.deleteProfileById = function(id) {
@@ -150,12 +138,12 @@
         var profiles;
         profiles = this.getProfiles();
         return _.findWhere(profiles, {
-          id: parseInt(id)
+          id: id
         });
       };
       this.getProfiles = function() {
         var profiles;
-        profiles = getProfiles();
+        profiles = StoreService.get('profiles');
         return profiles || [];
       };
       return this;
@@ -168,6 +156,43 @@
   angular.module('app').controller('HeaderController', [
     '$scope', function($scope) {
       return $scope.title = 'Size Me Up';
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('app').service('StoreService', [
+    function() {
+      this.generateSlug = function(name, collection) {
+        var ids, slug, version, _ref;
+        slug = this.slugify(name);
+        ids = _.pluck(collection, 'id');
+        while (_.contains(ids, slug)) {
+          version = (_ref = slug.match(/-([1-9]+)$/)) != null ? _ref[0] : void 0;
+          slug.replace(/-([1-9]+)$/, '');
+          if (version != null) {
+            slug += "-" + version;
+          } else {
+            slug += '-1';
+          }
+        }
+        return slug;
+      };
+      this.get = function(key) {
+        var json;
+        json = localStorage.getItem(key);
+        return JSON.parse(json);
+      };
+      this.set = function(key, value) {
+        var json;
+        json = JSON.stringify(value);
+        return localStorage.setItem(key, json);
+      };
+      this.slugify = function(string) {
+        return string.trim().toLowerCase().replace(' ', '-');
+      };
+      return this;
     }
   ]);
 
@@ -260,7 +285,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "      </div>\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"small-12 columns\">\n" +
-    "          <label for=\"profile_add_description\">Description</label>\n" +
+    "          <label for=\"profile_add_description\">Note</label>\n" +
     "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -297,29 +322,51 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "</div>\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"small-6 columns\">\n" +
-    "    <label>Overall</label>\n" +
+    "    <label>\n" +
+    "      Jacket size\n" +
+    "      &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
+    "    </label>\n" +
     "    <select>\n" +
     "      <option value=\"small\">S</option>\n" +
     "      <option value=\"medium\">M</option>\n" +
     "    </select>\n" +
-    "    <label>Bust</label>\n" +
-    "    <input type=\"text\" placeholder=\"Bust\"/>\n" +
+    "    <label>\n" +
+    "      Shirt size\n" +
+    "      &nbsp;<small>(also includes sweater and polo)</small>\n" +
+    "    </label>\n" +
+    "    <select>\n" +
+    "      <option value=\"small\">S</option>\n" +
+    "      <option value=\"medium\">M</option>\n" +
+    "    </select>\n" +
+    "    <div ng-switch=\"profile.gender\">\n" +
+    "      <div ng-switch-when=\"male\">\n" +
+    "        <label>Chest</label>\n" +
+    "        <input type=\"text\" placeholder=\"Chest\"/>\n" +
+    "      </div>\n" +
+    "      <div ng-switch-when=\"female\">\n" +
+    "        <label>Bust</label>\n" +
+    "        <input type=\"text\" placeholder=\"Bust\"/>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
     "    <label>Waist</label>\n" +
     "    <input type=\"text\" placeholder=\"Waist\"/>\n" +
-    "    <label>Hip</label>\n" +
-    "    <input type=\"text\" placeholder=\"Hip\"/>\n" +
     "    <label>Inseam</label>\n" +
     "    <input type=\"text\" placeholder=\"Inseam\"/>\n" +
-    "    <label>Height</label>\n" +
-    "    <input type=\"text\" placeholder=\"Height\"/>\n" +
     "  </div>\n" +
     "  <div class=\"small-6 columns\">\n" +
+    "    <label>Shoe</label>\n" +
+    "    <input type=\"text\" placeholder=\"Shoe\"/>\n" +
+    "    <label>Hat</label>\n" +
+    "    <input type=\"text\" placeholder=\"Hat\"/>\n" +
+    "    <label>Gloves</label>\n" +
+    "    <select>\n" +
+    "      <option value=\"small\">S</option>\n" +
+    "      <option value=\"medium\">M</option>\n" +
+    "    </select>\n" +
     "    <label>Ring</label>\n" +
     "    <input type=\"text\" placeholder=\"Ring\"/>\n" +
     "    <label>Bracelet</label>\n" +
     "    <input type=\"text\" placeholder=\"Bracelet\"/>\n" +
-    "    <label>Shoe</label>\n" +
-    "    <input type=\"text\" placeholder=\"Shoe\"/>\n" +
     "  </div>\n" +
     "</div>"
   );
