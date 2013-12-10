@@ -1,43 +1,26 @@
 angular.module('app').service 'ProfileService', [
-  '$filter'
+  'StoreService'
   (
-    $filter
+    StoreService
   ) ->
-    getProfiles = ->
-      # get profiles
-      json_profiles = localStorage.getItem 'profiles'
-
-      # convert from json
-      profiles = JSON.parse json_profiles
-
-    saveProfiles = (profiles) ->
-      # convert to json
-      json_profiles = JSON.stringify profiles
-
-      # store profile
-      localStorage.setItem 'profiles', json_profiles
-
     @createProfile = (profile) ->
       profiles = @getProfiles()
 
-      # get max id
-      max_id = _.max(_.pluck(profiles, 'id'))
-
       # generate new id
-      new_id = if max_id is Number.NEGATIVE_INFINITY then 1 else max_id + 1
+      slug = StoreService.generateSlug profile.name
 
       # add profile to list
-      profile =
-        id: new_id
+      new_profile =
+        id: slug
         name: profile.name
         description: profile.description
         gender: profile.gender
 
-      profiles.push profile
+      profiles.push new_profile
 
-      saveProfiles profiles
+      StoreService.set 'profiles', profiles
 
-      return profile
+      return new_profile
 
     @editProfile = (new_profile) ->
       profile = {}
@@ -52,7 +35,7 @@ angular.module('app').service 'ProfileService', [
 
       profiles[profile_index] = profile
 
-      saveProfiles profiles
+      StoreService.set 'profiles', profiles
 
       return profile
 
@@ -63,9 +46,9 @@ angular.module('app').service 'ProfileService', [
       ids = _.pluck profiles, 'id'
       profile_index = _.indexOf ids, profile.id
 
-      delete profiles[profile_index]
+      profiles.splice profile_index, 1
 
-      saveProfiles profiles
+      StoreService.set 'profiles', profiles
 
       return profiles
 
@@ -76,10 +59,10 @@ angular.module('app').service 'ProfileService', [
       profiles = @getProfiles()
 
       _.findWhere profiles,
-        id: parseInt id
+        id: id
 
     @getProfiles = ->
-      profiles = getProfiles()
+      profiles = StoreService.get 'profiles'
 
       return profiles || []
 
