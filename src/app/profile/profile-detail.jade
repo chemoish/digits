@@ -11,33 +11,55 @@
 
 .row
   .small-6.columns
-    label Overall
+    label Jacket size
+      | &nbsp;
+      small (also includes overcoats and raincoat)
+    select
+      option(value="small") S
+      option(value="medium") M
+
+    label Shirt size
+      | &nbsp;
+      small (also includes sweater and polo)
 
     select
       option(value="small") S
       option(value="medium") M
 
-    label Bust
+    div(ng-switch="profile.gender")
+      div(ng-switch-when="male")
+        label Chest
 
-    input(type="text", placeholder="Bust")
+        input(type="text", placeholder="Chest")
+
+      div(ng-switch-when="female")
+        label Bust
+
+        input(type="text", placeholder="Bust")
 
     label Waist
 
     input(type="text", placeholder="Waist")
 
-    label Hip
-
-    input(type="text", placeholder="Hip")
-
     label Inseam
 
     input(type="text", placeholder="Inseam")
 
-    label Height
-
-    input(type="text", placeholder="Height")
-
   .small-6.columns
+    label Shoe
+
+    input(type="text", placeholder="Shoe")
+
+    label Hat
+
+    input(type="text", placeholder="Hat")
+
+    label Gloves
+
+    select
+      option(value="small") S
+      option(value="medium") M
+
     label Ring
 
     input(type="text", placeholder="Ring")
@@ -45,7 +67,3 @@
     label Bracelet
 
     input(type="text", placeholder="Bracelet")
-
-    label Shoe
-
-    input(type="text", placeholder="Shoe")
