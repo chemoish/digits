@@ -13,8 +13,6 @@ angular.module('app').controller 'ProfileShowController', [
     $scope.profile = ProfileService.getProfileById $routeParams.id
 
     $scope.$watchCollection 'profile.sizes', _.debounce (newSizes, oldSizes) ->
-      console.log 'fire'
-
       return unless _.isEqual newSizes, oldSizes
 
       ProfileService.editProfile $scope.profile
