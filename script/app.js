@@ -88,7 +88,6 @@
       $scope["enum"] = EnumFactory;
       $scope.profile = ProfileService.getProfileById($routeParams.id);
       return $scope.$watchCollection('profile.sizes', _.debounce(function(newSizes, oldSizes) {
-        console.log('fire');
         if (!_.isEqual(newSizes, oldSizes)) {
           return;
         }
