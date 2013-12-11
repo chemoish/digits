@@ -14,56 +14,94 @@
     label Jacket size
       | &nbsp;
       small (also includes overcoats and raincoat)
-    select
-      option(value="small") S
-      option(value="medium") M
+    select(
+      ng-model="profile.sizes.jacket"
+      ng-options="size for size in enum.SIZES"
+    )
+      option(value="") Select a size
 
     label Shirt size
       | &nbsp;
       small (also includes sweater and polo)
 
-    select
-      option(value="small") S
-      option(value="medium") M
+    select(
+      ng-model="profile.sizes.shirt"
+      ng-options="size for size in enum.SIZES"
+    )
+      option(value="") Select a size
 
     div(ng-switch="profile.gender")
       div(ng-switch-when="male")
         label Chest
 
-        input(type="text", placeholder="Chest")
+        input(
+          placeholder="Chest"
+          type="text"
+          ng-model="profile.sizes.chest"
+        )
 
       div(ng-switch-when="female")
         label Bust
 
-        input(type="text", placeholder="Bust")
+        input(
+          placeholder="Bust"
+          type="text"
+          ng-model="profile.sizes.bust"
+        )
 
     label Waist
 
-    input(type="text", placeholder="Waist")
+    input(
+      placeholder="Waist"
+      type="text"
+      ng-model="profile.sizes.waist"
+    )
 
     label Inseam
 
-    input(type="text", placeholder="Inseam")
+    input(
+      placeholder="Inseam"
+      type="text"
+      ng-model="profile.sizes.inseam"
+    )
 
   .small-6.columns
     label Shoe
 
-    input(type="text", placeholder="Shoe")
+    input(
+      placeholder="Shoe"
+      type="text"
+      ng-model="profile.sizes.shoe"
+    )
 
     label Hat
 
-    input(type="text", placeholder="Hat")
+    input(
+      placeholder="Hat"
+      type="text"
+      ng-model="profile.sizes.hat"
+    )
 
     label Gloves
 
-    select
-      option(value="small") S
-      option(value="medium") M
+    select(
+      ng-model="profile.sizes.glove"
+      ng-options="size for size in enum.SIZES"
+    )
+      option(value="") Select a size
 
     label Ring
 
-    input(type="text", placeholder="Ring")
+    input(
+      placeholder="Ring"
+      type="text"
+      ng-model="profile.sizes.ring"
+    )
 
     label Bracelet
 
-    input(type="text", placeholder="Bracelet")
+    input(
+      placeholder="Bracelet"
+      type="text"
+      ng-model="profile.sizes.bracelet"
+    )
