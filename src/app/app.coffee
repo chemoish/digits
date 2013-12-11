@@ -13,8 +13,8 @@ angular.module 'app', ['ngRoute'], ($routeProvider, $locationProvider) ->
       controller: 'ProfileEditController'
     ).
     when('/profile/:id'
-      templateUrl: 'profile/profile-detail.html'
-      controller: 'ProfileDetailController'
+      templateUrl: 'profile/profile-show.html'
+      controller: 'ProfileShowController'
     ).
     otherwise(
       redirectTo: '/'
