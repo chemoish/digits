@@ -3,5 +3,5 @@ angular.module('app').controller 'HeaderController', [
   (
     $scope
   ) ->
-    $scope.title = 'Size Me Up'
+    $scope.title = 'Digits'
 ]
