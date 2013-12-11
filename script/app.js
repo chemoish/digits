@@ -10,8 +10,8 @@
       templateUrl: 'profile/profile-edit.html',
       controller: 'ProfileEditController'
     }).when('/profile/:id', {
-      templateUrl: 'profile/profile-detail.html',
-      controller: 'ProfileDetailController'
+      templateUrl: 'profile/profile-show.html',
+      controller: 'ProfileShowController'
     }).otherwise({
       redirectTo: '/'
     });
@@ -59,15 +59,6 @@
 }).call(this);
 
 (function() {
-  angular.module('app').controller('ProfileDetailController', [
-    '$routeParams', '$scope', 'ProfileService', function($routeParams, $scope, ProfileService) {
-      return $scope.profile = ProfileService.getProfileById($routeParams.id);
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   angular.module('app').controller('ProfileEditController', [
     '$location', '$routeParams', '$scope', 'ProfileService', function($location, $routeParams, $scope, ProfileService) {
       $scope.isProfileAddFormSubmitted = false;
@@ -86,6 +77,23 @@
         }
         return ProfileService.editProfile($scope.profile);
       };
+    }
+  ]);
+
+}).call(this);
+
+(function() {
+  angular.module('app').controller('ProfileShowController', [
+    '$routeParams', '$scope', 'EnumFactory', 'ProfileService', function($routeParams, $scope, EnumFactory, ProfileService) {
+      $scope["enum"] = EnumFactory;
+      $scope.profile = ProfileService.getProfileById($routeParams.id);
+      return $scope.$watchCollection('profile.sizes', _.debounce(function(newSizes, oldSizes) {
+        console.log('fire');
+        if (!_.isEqual(newSizes, oldSizes)) {
+          return;
+        }
+        return ProfileService.editProfile($scope.profile);
+      }, 300));
     }
   ]);
 
@@ -153,9 +161,27 @@
 }).call(this);
 
 (function() {
+  angular.module('app').factory('EnumFactory', function() {
+    var enums;
+    enums = {};
+    enums['SIZE'] = {
+      XSMALL: "XS",
+      SMALL: "S",
+      MEDIUM: "M",
+      LARGE: "L",
+      XLARGE: "XL",
+      XXLARGE: "XXL"
+    };
+    enums['SIZES'] = [enums.SIZE.XSMALL, enums.SIZE.SMALL, enums.SIZE.MEDIUM, enums.SIZE.LARGE, enums.SIZE.XLARGE, enums.SIZE.XXLARGE];
+    return enums;
+  });
+
+}).call(this);
+
+(function() {
   angular.module('app').controller('HeaderController', [
     '$scope', function($scope) {
-      return $scope.title = 'Size Me Up';
+      return $scope.title = 'Digits';
     }
   ]);
 
@@ -310,68 +336,6 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   );
 
 
-  $templateCache.put('profile/profile-detail.html',
-    "\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\"><a href=\"#edit-profile/{{profile.id}}\" class=\"button tiny right\">Edit</a>\n" +
-    "    <h1>Profile <small>{{profile.name}}</small></h1>\n" +
-    "    <div class=\"panel\">\n" +
-    "      <p>{{profile.description}}</p>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-6 columns\">\n" +
-    "    <label>\n" +
-    "      Jacket size\n" +
-    "      &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
-    "    </label>\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "    <label>\n" +
-    "      Shirt size\n" +
-    "      &nbsp;<small>(also includes sweater and polo)</small>\n" +
-    "    </label>\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "    <div ng-switch=\"profile.gender\">\n" +
-    "      <div ng-switch-when=\"male\">\n" +
-    "        <label>Chest</label>\n" +
-    "        <input type=\"text\" placeholder=\"Chest\"/>\n" +
-    "      </div>\n" +
-    "      <div ng-switch-when=\"female\">\n" +
-    "        <label>Bust</label>\n" +
-    "        <input type=\"text\" placeholder=\"Bust\"/>\n" +
-    "      </div>\n" +
-    "    </div>\n" +
-    "    <label>Waist</label>\n" +
-    "    <input type=\"text\" placeholder=\"Waist\"/>\n" +
-    "    <label>Inseam</label>\n" +
-    "    <input type=\"text\" placeholder=\"Inseam\"/>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-6 columns\">\n" +
-    "    <label>Shoe</label>\n" +
-    "    <input type=\"text\" placeholder=\"Shoe\"/>\n" +
-    "    <label>Hat</label>\n" +
-    "    <input type=\"text\" placeholder=\"Hat\"/>\n" +
-    "    <label>Gloves</label>\n" +
-    "    <select>\n" +
-    "      <option value=\"small\">S</option>\n" +
-    "      <option value=\"medium\">M</option>\n" +
-    "    </select>\n" +
-    "    <label>Ring</label>\n" +
-    "    <input type=\"text\" placeholder=\"Ring\"/>\n" +
-    "    <label>Bracelet</label>\n" +
-    "    <input type=\"text\" placeholder=\"Bracelet\"/>\n" +
-    "  </div>\n" +
-    "</div>"
-  );
-
-
   $templateCache.put('profile/profile-edit.html',
     "\n" +
     "<div class=\"row\">\n" +
@@ -418,17 +382,76 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   );
 
 
+  $templateCache.put('profile/profile-show.html',
+    "\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"small-12 columns\"><a href=\"#edit-profile/{{profile.id}}\" class=\"button tiny right\">Edit</a>\n" +
+    "    <h1>Profile <small>{{profile.name}}</small></h1>\n" +
+    "    <div class=\"panel\">\n" +
+    "      <p>{{profile.description}}</p>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</div>\n" +
+    "<div class=\"row\">\n" +
+    "  <div class=\"small-6 columns\">\n" +
+    "    <label>\n" +
+    "      Jacket size\n" +
+    "      &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
+    "    </label>\n" +
+    "    <select ng-model=\"profile.sizes.jacket\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <option value=\"\">Select a size</option>\n" +
+    "    </select>\n" +
+    "    <label>\n" +
+    "      Shirt size\n" +
+    "      &nbsp;<small>(also includes sweater and polo)</small>\n" +
+    "    </label>\n" +
+    "    <select ng-model=\"profile.sizes.shirt\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <option value=\"\">Select a size</option>\n" +
+    "    </select>\n" +
+    "    <div ng-switch=\"profile.gender\">\n" +
+    "      <div ng-switch-when=\"male\">\n" +
+    "        <label>Chest</label>\n" +
+    "        <input placeholder=\"Chest\" type=\"text\" ng-model=\"profile.sizes.chest\"/>\n" +
+    "      </div>\n" +
+    "      <div ng-switch-when=\"female\">\n" +
+    "        <label>Bust</label>\n" +
+    "        <input placeholder=\"Bust\" type=\"text\" ng-model=\"profile.sizes.bust\"/>\n" +
+    "      </div>\n" +
+    "    </div>\n" +
+    "    <label>Waist</label>\n" +
+    "    <input placeholder=\"Waist\" type=\"text\" ng-model=\"profile.sizes.waist\"/>\n" +
+    "    <label>Inseam</label>\n" +
+    "    <input placeholder=\"Inseam\" type=\"text\" ng-model=\"profile.sizes.inseam\"/>\n" +
+    "  </div>\n" +
+    "  <div class=\"small-6 columns\">\n" +
+    "    <label>Shoe</label>\n" +
+    "    <input placeholder=\"Shoe\" type=\"text\" ng-model=\"profile.sizes.shoe\"/>\n" +
+    "    <label>Hat</label>\n" +
+    "    <input placeholder=\"Hat\" type=\"text\" ng-model=\"profile.sizes.hat\"/>\n" +
+    "    <label>Gloves</label>\n" +
+    "    <select ng-model=\"profile.sizes.glove\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <option value=\"\">Select a size</option>\n" +
+    "    </select>\n" +
+    "    <label>Ring</label>\n" +
+    "    <input placeholder=\"Ring\" type=\"text\" ng-model=\"profile.sizes.ring\"/>\n" +
+    "    <label>Bracelet</label>\n" +
+    "    <input placeholder=\"Bracelet\" type=\"text\" ng-model=\"profile.sizes.bracelet\"/>\n" +
+    "  </div>\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('shared/layout/main/_footer.html',
     "\n" +
     "<footer>\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"small-9 columns\">\n" +
     "      <ul class=\"inline-list\">\n" +
-    "        <li>Size Me Up</li>\n" +
+    "        <li>Digits</li>\n" +
     "        <li><a href=\"#\">Home</a></li>\n" +
     "        <li><a href=\"#\">About</a></li>\n" +
     "      </ul>\n" +
-    "      <p>&copy; 2014 Size Me Up</p>\n" +
+    "      <p>&copy; 2014 Digits</p>\n" +
     "    </div>\n" +
     "    <div class=\"small-3 columns\">\n" +
     "      <ul class=\"inline-list\">\n" +
