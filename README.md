@@ -7,7 +7,7 @@ Single page application to manages apparel sizes for everyone you know
 ```bash
 
 # clone
-git clone https://github.com/StartTheShift/skeletor.git
+git clone https://github.com/chemoish/digits.git
 
 # install npm dependencies
 npm install
