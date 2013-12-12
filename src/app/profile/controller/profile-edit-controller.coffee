@@ -9,7 +9,7 @@ angular.module('app').controller 'ProfileEditController', [
     $scope
     ProfileService
   ) ->
-    $scope.isProfileAddFormSubmitted = false
+    $scope.isProfileEditFormSubmitted = false
     $scope.profile = ProfileService.getProfileById $routeParams.id
 
     $scope.deleteProfile = ->
@@ -19,12 +19,12 @@ angular.module('app').controller 'ProfileEditController', [
       $location.path "/"
 
     $scope.hasFieldError = (field) ->
-      return $scope.isProfileAddFormSubmitted && $scope.profile_add_form[field].$error.required
+      return $scope.isProfileEditFormSubmitted && $scope.profile_edit_form[field].$error.required
 
     $scope.saveProfile = ->
-      $scope.isProfileAddFormSubmitted = true
+      $scope.isProfileEditFormSubmitted = true
 
-      return unless $scope.profile_add_form.$valid
+      return unless $scope.profile_edit_form.$valid
 
       # update profile
       profile = ProfileService.editProfile $scope.profile

@@ -3,8 +3,8 @@
     h2 Edit Profile <small>{{profile.name}}</small>
 
 form(
-  id="profile_add_form"
-  name="profile_add_form"
+  id="profile_edit_form"
+  name="profile_edit_form"
   novalidate
   ng-submit="saveProfile()"
 )
@@ -13,11 +13,11 @@ form(
       ng-class="{'error': hasFieldError('name')}"
     )
       label(
-        for="name"
+        for="profile_edit_name"
       ) Name <small>required</small>
 
       input(
-        id="profile_add_name"
+        id="profile_edit_name"
         name="name"
         placeholder="Name"
         required
@@ -32,12 +32,12 @@ form(
   .row
     .columns
       label(
-        for="profile_add_description"
+        for="profile_edit_description"
       ) Note
 
       textarea(
-        id="profile_add_description"
-        name="profile_add_description"
+        id="profile_edit_description"
+        name="description"
         placeholder="Description"
         ng-model="profile.description"
       )
