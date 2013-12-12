@@ -246,39 +246,39 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"small-12 columns\">\n" +
-    "    <h1>Getting Started</h1>\n" +
-    "    <p>Some text explaining wtf this is</p>\n" +
-    "    <div style=\"height: 200px; background-color: #666\">img or something</div>\n" +
+    "    <h2>Gimme yo digits!</h2>\n" +
+    "    <p class=\"subtitle\">Manage the sizes of all your loved ones, effortlessly, through one simple app.</p>\n" +
+    "    <div class=\"callout\">\n" +
+    "      shopping<br />\n" +
+    "      made easy!\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "  <div class=\"columns\">\n" +
     "    <section class=\"panel\">\n" +
-    "      <h2>Section 1</h2>\n" +
-    "      <p>Section Content</p>\n" +
-    "      <ul>\n" +
-    "        <li><i class=\"fa fa-mobile\"></i>&nbsp;\n" +
-    "          Mobile compatible\n" +
-    "        </li>\n" +
-    "        <li><i class=\"fa fa-desktop\"></i>&nbsp;\n" +
-    "          Desktop compatible\n" +
-    "        </li>\n" +
-    "        <li><i class=\"fa fa-book\"></i>&nbsp;\n" +
-    "          Man's best friend\n" +
-    "        </li>\n" +
+    "      <h2>Features</h2>\n" +
+    "      <p class=\"subtitle\">Truely a man's best friend&hellip;</p>\n" +
+    "      <ul class=\"square\">\n" +
+    "        <li>Create profiles for all of your friends</li>\n" +
+    "        <li>Update sizes extremely quickly</li>\n" +
+    "        <li>Peace of mind</li>\n" +
+    "        <li>Absolutely Free</li>\n" +
     "      </ul>\n" +
     "    </section>\n" +
     "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
+    "  <div class=\"columns\">\n" +
     "    <section class=\"panel\">\n" +
-    "      <h2>Section 2</h2>\n" +
-    "      <p>Section Content</p>\n" +
-    "    </section>\n" +
-    "  </div>\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <section class=\"panel\">\n" +
-    "      <h2>Section 3</h2>\n" +
-    "      <p>Section Content</p>\n" +
+    "      <h2>Compatibility</h2>\n" +
+    "      <p class=\"subtitle\">Works on&hellip;</p>\n" +
+    "      <ul class=\"no-bullet\">\n" +
+    "        <li><i class=\"fa fa-mobile\"></i>&nbsp;\n" +
+    "          Mobile\n" +
+    "        </li>\n" +
+    "        <li><i class=\"fa fa-desktop\"></i>&nbsp;\n" +
+    "          Desktop\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
     "    </section>\n" +
     "  </div>\n" +
     "</div>"
@@ -308,154 +308,136 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('profile/profile-add.html',
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\">\n" +
-    "    <h1>Add Profile</h1>\n" +
+    "  <div class=\"columns\">\n" +
+    "    <h2>Add Profile</h2>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <div style=\"height: 200px; background-color: #666\">img or something</div>\n" +
+    "<form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
+    "  <div class=\"row\">\n" +
+    "    <div ng-class=\"{'error': hasFieldError('name')}\" class=\"columns\">\n" +
+    "      <label for=\"name\">Name <small>required</small></label>\n" +
+    "      <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
+    "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"small-8 columns\">\n" +
-    "    <form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
-    "      <div class=\"row\">\n" +
-    "        <div ng-class=\"{'error': hasFieldError('name')}\" class=\"small-12 columns\">\n" +
-    "          <label for=\"name\">Name <small>required</small></label>\n" +
-    "          <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <label for=\"profile_add_description\">Note</label>\n" +
-    "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <label>Gender <small>required</small></label>\n" +
-    "          <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
-    "          <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
-    "          <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
-    "          <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <button type=\"submit\" class=\"button tiny\">Save</button>\n" +
-    "          <button type=\"reset\" class=\"button secondary tiny\">Reset</button>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "    </form>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <label for=\"profile_add_description\">Note</label>\n" +
+    "      <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
+    "    </div>\n" +
     "  </div>\n" +
-    "</div>"
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <label>Gender <small>required</small></label>\n" +
+    "      <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
+    "      <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
+    "      <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
+    "      <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <button type=\"submit\" class=\"button tiny\">Save</button>\n" +
+    "      <button type=\"reset\" class=\"button secondary tiny\">Reset</button>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</form>"
   );
 
 
   $templateCache.put('profile/profile-edit.html',
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\">\n" +
-    "    <button ng-click=\"deleteProfile()\" class=\"button alert tiny right\">Delete</button>\n" +
-    "    <h1>Edit Profile <small>{{profile.name}}</small></h1>\n" +
+    "  <div class=\"columns\">\n" +
+    "    <h2>Edit Profile <small>{{profile.name}}</small></h2>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-4 columns\">\n" +
-    "    <div style=\"height: 200px; background-color: #666\">img or something</div>\n" +
+    "<form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
+    "  <div class=\"row\">\n" +
+    "    <div ng-class=\"{'error': hasFieldError('name')}\" class=\"columns\">\n" +
+    "      <label for=\"name\">Name <small>required</small></label>\n" +
+    "      <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
+    "    </div>\n" +
     "  </div>\n" +
-    "  <div class=\"small-8 columns\">\n" +
-    "    <form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
-    "      <div class=\"row\">\n" +
-    "        <div ng-class=\"{'error': hasFieldError('name')}\" class=\"small-12 columns\">\n" +
-    "          <label for=\"name\">Name <small>required</small></label>\n" +
-    "          <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <label for=\"profile_add_description\">Note</label>\n" +
-    "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <label>Gender <small>required</small></label>\n" +
-    "          <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
-    "          <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
-    "          <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
-    "          <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "      <div class=\"row\">\n" +
-    "        <div class=\"small-12 columns\">\n" +
-    "          <button type=\"submit\" class=\"button tiny\">Save</button><a href=\"#profile/{{profile.id}}\" class=\"button secondary tiny\">Cancel</a>\n" +
-    "        </div>\n" +
-    "      </div>\n" +
-    "    </form>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <label for=\"profile_add_description\">Note</label>\n" +
+    "      <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
+    "    </div>\n" +
     "  </div>\n" +
-    "</div>"
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <label>Gender <small>required</small></label>\n" +
+    "      <input id=\"profile_add_gender_male\" name=\"gender\" required=\"required\" type=\"radio\" value=\"male\" ng-model=\"profile.gender\"/>\n" +
+    "      <label for=\"profile_add_gender_male\" ng-class=\"{'error': hasFieldError('gender')}\">Male</label>\n" +
+    "      <input id=\"profile_add_gender_female\" name=\"gender\" required=\"required\" type=\"radio\" value=\"female\" ng-model=\"profile.gender\"/>\n" +
+    "      <label for=\"profile_add_gender_female\" ng-class=\"{'error': hasFieldError('gender')}\">Female</label>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns actions\">\n" +
+    "      <button type=\"submit\" class=\"button tiny\">Save</button><a href=\"#profile/{{profile.id}}\" class=\"button secondary tiny\">Cancel</a>\n" +
+    "      <button ng-click=\"deleteProfile()\" class=\"button alert tiny right\">Delete</button>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</form>"
   );
 
 
   $templateCache.put('profile/profile-show.html',
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\"><a href=\"#edit-profile/{{profile.id}}\" class=\"button tiny right\">Edit</a>\n" +
-    "    <h1>Profile <small>{{profile.name}}</small></h1>\n" +
-    "    <div class=\"panel\">\n" +
-    "      <dl>\n" +
-    "        <dt>Notes</dt>\n" +
-    "        <dd>{{profile.description}}</dd>\n" +
-    "      </dl>\n" +
-    "    </div>\n" +
+    "  <div class=\"columns\">\n" +
+    "    <h2>Profile <small><a href=\"#edit-profile/{{profile.id}}\">{{profile.name}}</a></small></h2>\n" +
+    "    <p class=\"subtitle\">All changes are automagically saved!</p>\n" +
+    "    <blockquote>{{profile.description}} <cite>You</cite></blockquote>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<div class=\"row\">\n" +
-    "  <div class=\"small-6 columns\">\n" +
-    "    <label>\n" +
-    "      Jacket size\n" +
-    "      &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
-    "    </label>\n" +
-    "    <select ng-model=\"profile.sizes.jacket\" ng-options=\"size for size in enum.SIZES\">\n" +
-    "      <option value=\"\">Select a size</option>\n" +
-    "    </select>\n" +
-    "    <label>\n" +
-    "      Shirt size\n" +
-    "      &nbsp;<small>(also includes sweater and polo)</small>\n" +
-    "    </label>\n" +
-    "    <select ng-model=\"profile.sizes.shirt\" ng-options=\"size for size in enum.SIZES\">\n" +
-    "      <option value=\"\">Select a size</option>\n" +
-    "    </select>\n" +
-    "    <div ng-switch=\"profile.gender\">\n" +
-    "      <div ng-switch-when=\"male\">\n" +
-    "        <label>Chest</label>\n" +
-    "        <input placeholder=\"Chest\" type=\"text\" ng-model=\"profile.sizes.chest\"/>\n" +
+    "<form id=\"profile_show_form\" name=\"profile_show_form\" novalidate=\"novalidate\">\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <label>\n" +
+    "        Jacket size\n" +
+    "        &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
+    "      </label>\n" +
+    "      <select ng-model=\"profile.sizes.jacket\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "        <option value=\"\">Select a size</option>\n" +
+    "      </select>\n" +
+    "      <label>\n" +
+    "        Shirt size\n" +
+    "        &nbsp;<small>(also includes sweater and polo)</small>\n" +
+    "      </label>\n" +
+    "      <select ng-model=\"profile.sizes.shirt\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "        <option value=\"\">Select a size</option>\n" +
+    "      </select>\n" +
+    "      <div ng-switch=\"profile.gender\">\n" +
+    "        <div ng-switch-when=\"male\">\n" +
+    "          <label>Chest</label>\n" +
+    "          <input placeholder=\"Chest\" type=\"text\" ng-model=\"profile.sizes.chest\"/>\n" +
+    "        </div>\n" +
+    "        <div ng-switch-when=\"female\">\n" +
+    "          <label>Bust</label>\n" +
+    "          <input placeholder=\"Bust\" type=\"text\" ng-model=\"profile.sizes.bust\"/>\n" +
+    "        </div>\n" +
     "      </div>\n" +
-    "      <div ng-switch-when=\"female\">\n" +
-    "        <label>Bust</label>\n" +
-    "        <input placeholder=\"Bust\" type=\"text\" ng-model=\"profile.sizes.bust\"/>\n" +
-    "      </div>\n" +
+    "      <label>Waist</label>\n" +
+    "      <input placeholder=\"Waist\" type=\"text\" ng-model=\"profile.sizes.waist\"/>\n" +
+    "      <label>Inseam</label>\n" +
+    "      <input placeholder=\"Inseam\" type=\"text\" ng-model=\"profile.sizes.inseam\"/>\n" +
+    "      <label>Shoe</label>\n" +
+    "      <input placeholder=\"Shoe\" type=\"text\" ng-model=\"profile.sizes.shoe\"/>\n" +
+    "      <label>Hat</label>\n" +
+    "      <input placeholder=\"Hat\" type=\"text\" ng-model=\"profile.sizes.hat\"/>\n" +
+    "      <label>Gloves</label>\n" +
+    "      <select ng-model=\"profile.sizes.glove\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "        <option value=\"\">Select a size</option>\n" +
+    "      </select>\n" +
+    "      <label>Ring</label>\n" +
+    "      <input placeholder=\"Ring\" type=\"text\" ng-model=\"profile.sizes.ring\"/>\n" +
+    "      <label>Bracelet</label>\n" +
+    "      <input placeholder=\"Bracelet\" type=\"text\" ng-model=\"profile.sizes.bracelet\"/>\n" +
     "    </div>\n" +
-    "    <label>Waist</label>\n" +
-    "    <input placeholder=\"Waist\" type=\"text\" ng-model=\"profile.sizes.waist\"/>\n" +
-    "    <label>Inseam</label>\n" +
-    "    <input placeholder=\"Inseam\" type=\"text\" ng-model=\"profile.sizes.inseam\"/>\n" +
     "  </div>\n" +
-    "  <div class=\"small-6 columns\">\n" +
-    "    <label>Shoe</label>\n" +
-    "    <input placeholder=\"Shoe\" type=\"text\" ng-model=\"profile.sizes.shoe\"/>\n" +
-    "    <label>Hat</label>\n" +
-    "    <input placeholder=\"Hat\" type=\"text\" ng-model=\"profile.sizes.hat\"/>\n" +
-    "    <label>Gloves</label>\n" +
-    "    <select ng-model=\"profile.sizes.glove\" ng-options=\"size for size in enum.SIZES\">\n" +
-    "      <option value=\"\">Select a size</option>\n" +
-    "    </select>\n" +
-    "    <label>Ring</label>\n" +
-    "    <input placeholder=\"Ring\" type=\"text\" ng-model=\"profile.sizes.ring\"/>\n" +
-    "    <label>Bracelet</label>\n" +
-    "    <input placeholder=\"Bracelet\" type=\"text\" ng-model=\"profile.sizes.bracelet\"/>\n" +
-    "  </div>\n" +
-    "</div>"
+    "</form>"
   );
 
 
@@ -463,19 +445,12 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "<footer>\n" +
     "  <div class=\"row\">\n" +
-    "    <div class=\"small-9 columns\">\n" +
+    "    <div class=\"columns\">\n" +
     "      <ul class=\"inline-list\">\n" +
     "        <li>Digits</li>\n" +
     "        <li><a href=\"#\">Home</a></li>\n" +
-    "        <li><a href=\"#\">About</a></li>\n" +
     "      </ul>\n" +
-    "      <p>&copy; 2014 Digits</p>\n" +
-    "    </div>\n" +
-    "    <div class=\"small-3 columns\">\n" +
-    "      <ul class=\"inline-list\">\n" +
-    "        <li><a href=\"#\"><i class=\"fa fa-facebook-square\"></i></a></li>\n" +
-    "        <li><a href=\"#\"><i class=\"fa fa-twitter-square\"></i></a></li>\n" +
-    "      </ul>\n" +
+    "      <p class=\"copyright\">&copy; 2014 Digits</p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</footer>"
@@ -485,11 +460,12 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('shared/layout/main/_header.html',
     "\n" +
     "<header ng-controller=\"HeaderController\">\n" +
+    "  <div class=\"brand\"><a href=\"/\" class=\"logo\"><i class=\"fa fa-lightbulb-o\"></i>\n" +
+    "      <h1>Digits</h1>\n" +
+    "      <p class=\"subtitle\">Taking the guesswork out of shopping.</p></a></div>\n" +
     "  <nav class=\"tab-bar\">\n" +
     "    <section class=\"left-small\"><a class=\"left-off-canvas-toggle menu-icon\"><span></span></a></section>\n" +
-    "    <section class=\"right tab-bar-section\">\n" +
-    "      <h1><a id=\"brand\" href=\"/\">{{title}}</a></h1>\n" +
-    "    </section>\n" +
+    "    <section class=\"middle tab-bar-section\">Menu</section>\n" +
     "  </nav>\n" +
     "</header>"
   );
