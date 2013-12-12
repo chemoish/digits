@@ -12,9 +12,9 @@ angular.module('app').controller 'ProfileShowController', [
     $scope.enum = EnumFactory
     $scope.profile = ProfileService.getProfileById $routeParams.id
 
+    # Note: this gets fired on page load and on every property change
+    # the newSizes and oldSizes are always the same. possible bug?
     $scope.$watchCollection 'profile.sizes', _.debounce (newSizes, oldSizes) ->
-      return unless _.isEqual newSizes, oldSizes
-
       ProfileService.editProfile $scope.profile
     , 300
 ]
