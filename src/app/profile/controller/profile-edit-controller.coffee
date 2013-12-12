@@ -27,5 +27,8 @@ angular.module('app').controller 'ProfileEditController', [
       return unless $scope.profile_add_form.$valid
 
       # update profile
-      ProfileService.editProfile $scope.profile
+      profile = ProfileService.editProfile $scope.profile
+
+      # navigate to edit profile
+      $location.path "/edit-profile/#{profile.id}"
 ]
