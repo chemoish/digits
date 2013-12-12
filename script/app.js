@@ -29,7 +29,16 @@
 (function() {
   angular.module('app').controller('navigationController', [
     '$filter', '$scope', 'ProfileService', function($filter, $scope, ProfileService) {
-      return $scope.profiles = $filter('orderBy')(ProfileService.getProfiles(), 'name');
+      $scope.profiles = ProfileService.getProfilesSorted('name');
+      $scope.$on('profile-create', function() {
+        return $scope.profiles = ProfileService.getProfilesSorted('name');
+      });
+      $scope.$on('profile-delete', function() {
+        return $scope.profiles = ProfileService.getProfilesSorted('name');
+      });
+      return $scope.$on('profile-edit', function() {
+        return $scope.profiles = ProfileService.getProfilesSorted('name');
+      });
     }
   ]);
 
@@ -71,11 +80,13 @@
         return $scope.isProfileAddFormSubmitted && $scope.profile_add_form[field].$error.required;
       };
       return $scope.saveProfile = function() {
+        var profile;
         $scope.isProfileAddFormSubmitted = true;
         if (!$scope.profile_add_form.$valid) {
           return;
         }
-        return ProfileService.editProfile($scope.profile);
+        profile = ProfileService.editProfile($scope.profile);
+        return $location.path("/edit-profile/" + profile.id);
       };
     }
   ]);
@@ -88,9 +99,6 @@
       $scope["enum"] = EnumFactory;
       $scope.profile = ProfileService.getProfileById($routeParams.id);
       return $scope.$watchCollection('profile.sizes', _.debounce(function(newSizes, oldSizes) {
-        if (!_.isEqual(newSizes, oldSizes)) {
-          return;
-        }
         return ProfileService.editProfile($scope.profile);
       }, 300));
     }
@@ -100,11 +108,11 @@
 
 (function() {
   angular.module('app').service('ProfileService', [
-    'StoreService', function(StoreService) {
+    '$filter', '$rootScope', 'StoreService', function($filter, $rootScope, StoreService) {
       this.createProfile = function(profile) {
         var new_profile, profiles, slug;
         profiles = this.getProfiles();
-        slug = StoreService.generateSlug(profile.name);
+        slug = StoreService.generateSlug(profile.id, profile.name, profiles);
         new_profile = {
           id: slug,
           name: profile.name,
@@ -113,33 +121,35 @@
         };
         profiles.push(new_profile);
         StoreService.set('profiles', profiles);
+        $rootScope.$broadcast('profile-create');
         return new_profile;
       };
-      this.editProfile = function(new_profile) {
-        var ids, old_profile, profile, profile_index, profiles;
-        profile = {};
-        old_profile = this.getProfileById(new_profile.id);
-        _.extend(profile, old_profile, new_profile);
+      this.editProfile = function(profile) {
+        var ids, profile_index, profiles, slug;
         profiles = this.getProfiles();
         ids = _.pluck(profiles, 'id');
         profile_index = _.indexOf(ids, profile.id);
+        slug = StoreService.generateSlug(profile.id, profile.name, profiles);
+        if (profile.id !== slug) {
+          profile.id = slug;
+        }
         profiles[profile_index] = profile;
         StoreService.set('profiles', profiles);
+        $rootScope.$broadcast('profile-edit');
         return profile;
       };
       this.deleteProfile = function(profile) {
-        var ids, profile_index, profiles;
-        this.deleteProfileById(profile.id);
-        profiles = this.getProfiles();
-        ids = _.pluck(profiles, 'id');
-        profile_index = _.indexOf(ids, profile.id);
-        profiles.splice(profile_index, 1);
-        StoreService.set('profiles', profiles);
-        return profiles;
+        return this.deleteProfileById(profile.id);
       };
       this.deleteProfileById = function(id) {
-        var profile;
-        return profile = this.getProfileById();
+        var ids, profile_index, profiles;
+        profiles = this.getProfiles();
+        ids = _.pluck(profiles, 'id');
+        profile_index = _.indexOf(ids, id);
+        profiles.splice(profile_index, 1);
+        StoreService.set('profiles', profiles);
+        $rootScope.$broadcast('profile-delete');
+        return profiles;
       };
       this.getProfileById = function(id) {
         var profiles;
@@ -152,6 +162,12 @@
         var profiles;
         profiles = StoreService.get('profiles');
         return profiles || [];
+      };
+      this.getProfilesSorted = function(sort) {
+        if (sort == null) {
+          sort = '';
+        }
+        return $filter('orderBy')(this.getProfiles(), sort);
       };
       return this;
     }
@@ -189,15 +205,15 @@
 (function() {
   angular.module('app').service('StoreService', [
     function() {
-      this.generateSlug = function(name, collection) {
+      this.generateSlug = function(id, name, collection) {
         var ids, slug, version, _ref;
         slug = this.slugify(name);
         ids = _.pluck(collection, 'id');
-        while (_.contains(ids, slug)) {
-          version = (_ref = slug.match(/-([1-9]+)$/)) != null ? _ref[0] : void 0;
-          slug.replace(/-([1-9]+)$/, '');
+        while (id !== slug && _.contains(ids, slug)) {
+          version = (_ref = slug.match(/-([1-9]+)$/)) != null ? _ref[1] : void 0;
           if (version != null) {
-            slug += "-" + version;
+            version = parseInt(version) + 1;
+            slug = slug.replace(/-([1-9]+)$/, version);
           } else {
             slug += '-1';
           }
@@ -357,7 +373,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "      </div>\n" +
     "      <div class=\"row\">\n" +
     "        <div class=\"small-12 columns\">\n" +
-    "          <label for=\"profile_add_description\">Description</label>\n" +
+    "          <label for=\"profile_add_description\">Note</label>\n" +
     "          <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
     "        </div>\n" +
     "      </div>\n" +
@@ -387,7 +403,10 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "  <div class=\"small-12 columns\"><a href=\"#edit-profile/{{profile.id}}\" class=\"button tiny right\">Edit</a>\n" +
     "    <h1>Profile <small>{{profile.name}}</small></h1>\n" +
     "    <div class=\"panel\">\n" +
-    "      <p>{{profile.description}}</p>\n" +
+    "      <dl>\n" +
+    "        <dt>Notes</dt>\n" +
+    "        <dd>{{profile.description}}</dd>\n" +
+    "      </dl>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
