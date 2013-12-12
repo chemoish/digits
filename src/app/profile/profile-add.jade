@@ -13,7 +13,7 @@ form(
       ng-class="{'error': hasFieldError('name')}"
     )
       label(
-        for="name"
+        for="profile_add_name"
       ) Name <small>required</small>
 
       input(
@@ -37,7 +37,7 @@ form(
 
       textarea(
         id="profile_add_description"
-        name="profile_add_description"
+        name="description"
         placeholder="Description"
         ng-model="profile.description"
       )
