@@ -105,6 +105,7 @@ footer> .row {
   border-top: 1px solid #a5c88f;
   color: #a5c88f;
   font-size: 55px;
+  -webkit-font-smoothing: antialiased;
   height: 200px;
   margin-bottom: 20px;
   padding-top: 50px;
