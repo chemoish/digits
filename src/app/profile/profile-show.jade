@@ -13,21 +13,29 @@ form(
 )
   .row
     .columns
-      label Jacket size
+      label(
+        for="profile_show_jacket"
+      ) Jacket size
         | &nbsp;
         small (also includes overcoats and raincoat)
 
       select(
+        id="profile_show_jacket"
+        name="jacket"
         ng-model="profile.sizes.jacket"
         ng-options="size for size in enum.SIZES"
       )
         option(value="") Select a size
 
-      label Shirt size
+      label(
+        for="profile_show_shirt"
+      ) Shirt size
         | &nbsp;
         small (also includes sweater and polo)
 
       select(
+        id="profile_show_shirt"
+        name="shirt"
         ng-model="profile.sizes.shirt"
         ng-options="size for size in enum.SIZES"
       )
@@ -35,74 +43,110 @@ form(
 
       div(ng-switch="profile.gender")
         div(ng-switch-when="male")
-          label Chest
+          label(
+            for="profile_show_chest"
+          ) Chest
 
           input(
+            id="profile_show_chest"
+            name="chest"
             placeholder="Chest"
             type="text"
             ng-model="profile.sizes.chest"
           )
 
         div(ng-switch-when="female")
-          label Bust
+          label(
+            for="profile_show_bust"
+          ) Bust
 
           input(
+            id="profile_show_bust"
+            name="bust"
             placeholder="Bust"
             type="text"
             ng-model="profile.sizes.bust"
           )
 
-      label Waist
+      label(
+        for="profile_show_waist"
+      ) Waist
 
       input(
+        id="profile_show_waist"
+        name="waist"
         placeholder="Waist"
         type="text"
         ng-model="profile.sizes.waist"
       )
 
-      label Inseam
+      label(
+        for="profile_show_inseam"
+      ) Inseam
 
       input(
+        id="profile_show_inseam"
+        name="inseam"
         placeholder="Inseam"
         type="text"
         ng-model="profile.sizes.inseam"
       )
 
-      label Shoe
+      label(
+        for="profile_show_shoe"
+      ) Shoe
 
       input(
+        id="profile_show_shoe"
+        name="shoe"
         placeholder="Shoe"
         type="text"
         ng-model="profile.sizes.shoe"
       )
 
-      label Hat
+      label(
+        for="profile_show_hat"
+      ) Hat
 
       input(
+        id="profile_show_hat"
+        name="hat"
         placeholder="Hat"
         type="text"
         ng-model="profile.sizes.hat"
       )
 
-      label Gloves
+      label(
+        for="profile_show_glove"
+      ) Gloves
 
       select(
+        id="profile_show_glove"
+        name="profile_show_glove"
         ng-model="profile.sizes.glove"
         ng-options="size for size in enum.SIZES"
       )
         option(value="") Select a size
 
-      label Ring
+      label(
+        for="profile_show_ring"
+      ) Ring
 
       input(
+        id="profile_show_ring"
+        name="ring"
         placeholder="Ring"
         type="text"
         ng-model="profile.sizes.ring"
       )
 
-      label Bracelet
+      label(
+        for="profile_show_bracelet"
+      ) Bracelet
 
       input(
+        id="profile_show_bracelet"
+        name="bracelet"
         placeholder="Bracelet"
         type="text"
         ng-model="profile.sizes.bracelet"
