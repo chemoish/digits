@@ -70,19 +70,19 @@
 (function() {
   angular.module('app').controller('ProfileEditController', [
     '$location', '$routeParams', '$scope', 'ProfileService', function($location, $routeParams, $scope, ProfileService) {
-      $scope.isProfileAddFormSubmitted = false;
+      $scope.isProfileEditFormSubmitted = false;
       $scope.profile = ProfileService.getProfileById($routeParams.id);
       $scope.deleteProfile = function() {
         ProfileService.deleteProfile($scope.profile);
         return $location.path("/");
       };
       $scope.hasFieldError = function(field) {
-        return $scope.isProfileAddFormSubmitted && $scope.profile_add_form[field].$error.required;
+        return $scope.isProfileEditFormSubmitted && $scope.profile_edit_form[field].$error.required;
       };
       return $scope.saveProfile = function() {
         var profile;
-        $scope.isProfileAddFormSubmitted = true;
-        if (!$scope.profile_add_form.$valid) {
+        $scope.isProfileEditFormSubmitted = true;
+        if (!$scope.profile_edit_form.$valid) {
           return;
         }
         profile = ProfileService.editProfile($scope.profile);
@@ -315,14 +315,14 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "<form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
     "  <div class=\"row\">\n" +
     "    <div ng-class=\"{'error': hasFieldError('name')}\" class=\"columns\">\n" +
-    "      <label for=\"name\">Name <small>required</small></label>\n" +
+    "      <label for=\"profile_add_name\">Name <small>required</small></label>\n" +
     "      <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"columns\">\n" +
     "      <label for=\"profile_add_description\">Note</label>\n" +
-    "      <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
+    "      <textarea id=\"profile_add_description\" name=\"description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"row\">\n" +
@@ -351,17 +351,17 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "    <h2>Edit Profile <small>{{profile.name}}</small></h2>\n" +
     "  </div>\n" +
     "</div>\n" +
-    "<form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
+    "<form id=\"profile_edit_form\" name=\"profile_edit_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
     "  <div class=\"row\">\n" +
     "    <div ng-class=\"{'error': hasFieldError('name')}\" class=\"columns\">\n" +
-    "      <label for=\"name\">Name <small>required</small></label>\n" +
-    "      <input id=\"profile_add_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
+    "      <label for=\"profile_edit_name\">Name <small>required</small></label>\n" +
+    "      <input id=\"profile_edit_name\" name=\"name\" placeholder=\"Name\" required=\"required\" type=\"text\" ng-model=\"profile.name\"/><small ng-show=\"hasFieldError('name')\" class=\"error\">Please enter a name</small>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"columns\">\n" +
-    "      <label for=\"profile_add_description\">Note</label>\n" +
-    "      <textarea id=\"profile_add_description\" name=\"profile_add_description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
+    "      <label for=\"profile_edit_description\">Note</label>\n" +
+    "      <textarea id=\"profile_edit_description\" name=\"description\" placeholder=\"Description\" ng-model=\"profile.description\"></textarea>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "  <div class=\"row\">\n" +
@@ -395,46 +395,46 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "<form id=\"profile_show_form\" name=\"profile_show_form\" novalidate=\"novalidate\">\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"columns\">\n" +
-    "      <label>\n" +
+    "      <label for=\"profile_show_jacket\">\n" +
     "        Jacket size\n" +
     "        &nbsp;<small>(also includes overcoats and raincoat)</small>\n" +
     "      </label>\n" +
-    "      <select ng-model=\"profile.sizes.jacket\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <select id=\"profile_show_jacket\" name=\"jacket\" ng-model=\"profile.sizes.jacket\" ng-options=\"size for size in enum.SIZES\">\n" +
     "        <option value=\"\">Select a size</option>\n" +
     "      </select>\n" +
-    "      <label>\n" +
+    "      <label for=\"profile_show_shirt\">\n" +
     "        Shirt size\n" +
     "        &nbsp;<small>(also includes sweater and polo)</small>\n" +
     "      </label>\n" +
-    "      <select ng-model=\"profile.sizes.shirt\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <select id=\"profile_show_shirt\" name=\"shirt\" ng-model=\"profile.sizes.shirt\" ng-options=\"size for size in enum.SIZES\">\n" +
     "        <option value=\"\">Select a size</option>\n" +
     "      </select>\n" +
     "      <div ng-switch=\"profile.gender\">\n" +
     "        <div ng-switch-when=\"male\">\n" +
-    "          <label>Chest</label>\n" +
-    "          <input placeholder=\"Chest\" type=\"text\" ng-model=\"profile.sizes.chest\"/>\n" +
+    "          <label for=\"profile_show_chest\">Chest</label>\n" +
+    "          <input id=\"profile_show_chest\" name=\"chest\" placeholder=\"Chest\" type=\"text\" ng-model=\"profile.sizes.chest\"/>\n" +
     "        </div>\n" +
     "        <div ng-switch-when=\"female\">\n" +
-    "          <label>Bust</label>\n" +
-    "          <input placeholder=\"Bust\" type=\"text\" ng-model=\"profile.sizes.bust\"/>\n" +
+    "          <label for=\"profile_show_bust\">Bust</label>\n" +
+    "          <input id=\"profile_show_bust\" name=\"bust\" placeholder=\"Bust\" type=\"text\" ng-model=\"profile.sizes.bust\"/>\n" +
     "        </div>\n" +
     "      </div>\n" +
-    "      <label>Waist</label>\n" +
-    "      <input placeholder=\"Waist\" type=\"text\" ng-model=\"profile.sizes.waist\"/>\n" +
-    "      <label>Inseam</label>\n" +
-    "      <input placeholder=\"Inseam\" type=\"text\" ng-model=\"profile.sizes.inseam\"/>\n" +
-    "      <label>Shoe</label>\n" +
-    "      <input placeholder=\"Shoe\" type=\"text\" ng-model=\"profile.sizes.shoe\"/>\n" +
-    "      <label>Hat</label>\n" +
-    "      <input placeholder=\"Hat\" type=\"text\" ng-model=\"profile.sizes.hat\"/>\n" +
-    "      <label>Gloves</label>\n" +
-    "      <select ng-model=\"profile.sizes.glove\" ng-options=\"size for size in enum.SIZES\">\n" +
+    "      <label for=\"profile_show_waist\">Waist</label>\n" +
+    "      <input id=\"profile_show_waist\" name=\"waist\" placeholder=\"Waist\" type=\"text\" ng-model=\"profile.sizes.waist\"/>\n" +
+    "      <label for=\"profile_show_inseam\">Inseam</label>\n" +
+    "      <input id=\"profile_show_inseam\" name=\"inseam\" placeholder=\"Inseam\" type=\"text\" ng-model=\"profile.sizes.inseam\"/>\n" +
+    "      <label for=\"profile_show_shoe\">Shoe</label>\n" +
+    "      <input id=\"profile_show_shoe\" name=\"shoe\" placeholder=\"Shoe\" type=\"text\" ng-model=\"profile.sizes.shoe\"/>\n" +
+    "      <label for=\"profile_show_hat\">Hat</label>\n" +
+    "      <input id=\"profile_show_hat\" name=\"hat\" placeholder=\"Hat\" type=\"text\" ng-model=\"profile.sizes.hat\"/>\n" +
+    "      <label for=\"profile_show_glove\">Gloves</label>\n" +
+    "      <select id=\"profile_show_glove\" name=\"profile_show_glove\" ng-model=\"profile.sizes.glove\" ng-options=\"size for size in enum.SIZES\">\n" +
     "        <option value=\"\">Select a size</option>\n" +
     "      </select>\n" +
-    "      <label>Ring</label>\n" +
-    "      <input placeholder=\"Ring\" type=\"text\" ng-model=\"profile.sizes.ring\"/>\n" +
-    "      <label>Bracelet</label>\n" +
-    "      <input placeholder=\"Bracelet\" type=\"text\" ng-model=\"profile.sizes.bracelet\"/>\n" +
+    "      <label for=\"profile_show_ring\">Ring</label>\n" +
+    "      <input id=\"profile_show_ring\" name=\"ring\" placeholder=\"Ring\" type=\"text\" ng-model=\"profile.sizes.ring\"/>\n" +
+    "      <label for=\"profile_show_bracelet\">Bracelet</label>\n" +
+    "      <input id=\"profile_show_bracelet\" name=\"bracelet\" placeholder=\"Bracelet\" type=\"text\" ng-model=\"profile.sizes.bracelet\"/>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</form>"
