@@ -7,5 +7,14 @@ angular.module('app').controller 'navigationController', [
     $scope
     ProfileService
   ) ->
-    $scope.profiles = $filter('orderBy')(ProfileService.getProfiles(), 'name')
+    $scope.profiles = ProfileService.getProfilesSorted 'name'
+
+    $scope.$on 'profile-create', ->
+      $scope.profiles = ProfileService.getProfilesSorted 'name'
+
+    $scope.$on 'profile-delete', ->
+      $scope.profiles = ProfileService.getProfilesSorted 'name'
+
+    $scope.$on 'profile-edit', ->
+      $scope.profiles = ProfileService.getProfilesSorted 'name'
 ]
