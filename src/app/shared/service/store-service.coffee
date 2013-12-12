@@ -1,17 +1,17 @@
 angular.module('app').service 'StoreService', [
   ->
-    @generateSlug = (name, collection) ->
+    @generateSlug = (id, name, collection) ->
       slug = @slugify name
 
       ids = _.pluck collection, 'id'
 
-      while (_.contains ids, slug)
-        version = slug.match(/-([1-9]+)$/)?[0]
-
-        slug.replace(/-([1-9]+)$/, '')
+      while (id isnt slug and _.contains ids, slug)
+        version = slug.match(/-([1-9]+)$/)?[1]
 
         if version?
-          slug += "-#{version}"
+          version = parseInt(version) + 1
+
+          slug = slug.replace(/-([1-9]+)$/, version)
         else
           slug += '-1'
 
