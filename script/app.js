@@ -27,6 +27,15 @@
 }).call(this);
 
 (function() {
+  angular.module('app').controller('HeaderController', [
+    '$scope', function($scope) {
+      return $scope.title = 'Digits';
+    }
+  ]);
+
+}).call(this);
+
+(function() {
   angular.module('app').controller('navigationController', [
     '$filter', '$scope', 'ProfileService', function($filter, $scope, ProfileService) {
       $scope.profiles = ProfileService.getProfilesSorted('name');
@@ -194,15 +203,6 @@
 }).call(this);
 
 (function() {
-  angular.module('app').controller('HeaderController', [
-    '$scope', function($scope) {
-      return $scope.title = 'Digits';
-    }
-  ]);
-
-}).call(this);
-
-(function() {
   angular.module('app').service('StoreService', [
     function() {
       this.generateSlug = function(id, name, collection) {
@@ -282,6 +282,36 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "    </section>\n" +
     "  </div>\n" +
     "</div>"
+  );
+
+
+  $templateCache.put('layout/main/_footer.html',
+    "\n" +
+    "<footer>\n" +
+    "  <div class=\"row\">\n" +
+    "    <div class=\"columns\">\n" +
+    "      <ul class=\"inline-list\">\n" +
+    "        <li>Digits</li>\n" +
+    "        <li><a href=\"#\">Home</a></li>\n" +
+    "      </ul>\n" +
+    "      <p class=\"copyright\">&copy; 2014 Digits</p>\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "</footer>"
+  );
+
+
+  $templateCache.put('layout/main/_header.html',
+    "\n" +
+    "<header ng-controller=\"HeaderController\">\n" +
+    "  <div class=\"brand\"><a href=\"#\" class=\"logo\"><i class=\"fa fa-lightbulb-o\"></i>\n" +
+    "      <h1>Digits</h1>\n" +
+    "      <p class=\"subtitle\">Taking the guesswork out of shopping.</p></a></div>\n" +
+    "  <nav class=\"tab-bar\">\n" +
+    "    <section class=\"left-small\"><a class=\"left-off-canvas-toggle menu-icon\"><span></span></a></section>\n" +
+    "    <section class=\"middle tab-bar-section\">Menu</section>\n" +
+    "  </nav>\n" +
+    "</header>"
   );
 
 
@@ -438,36 +468,6 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "    </div>\n" +
     "  </div>\n" +
     "</form>"
-  );
-
-
-  $templateCache.put('shared/layout/main/_footer.html',
-    "\n" +
-    "<footer>\n" +
-    "  <div class=\"row\">\n" +
-    "    <div class=\"columns\">\n" +
-    "      <ul class=\"inline-list\">\n" +
-    "        <li>Digits</li>\n" +
-    "        <li><a href=\"#\">Home</a></li>\n" +
-    "      </ul>\n" +
-    "      <p class=\"copyright\">&copy; 2014 Digits</p>\n" +
-    "    </div>\n" +
-    "  </div>\n" +
-    "</footer>"
-  );
-
-
-  $templateCache.put('shared/layout/main/_header.html',
-    "\n" +
-    "<header ng-controller=\"HeaderController\">\n" +
-    "  <div class=\"brand\"><a href=\"/\" class=\"logo\"><i class=\"fa fa-lightbulb-o\"></i>\n" +
-    "      <h1>Digits</h1>\n" +
-    "      <p class=\"subtitle\">Taking the guesswork out of shopping.</p></a></div>\n" +
-    "  <nav class=\"tab-bar\">\n" +
-    "    <section class=\"left-small\"><a class=\"left-off-canvas-toggle menu-icon\"><span></span></a></section>\n" +
-    "    <section class=\"middle tab-bar-section\">Menu</section>\n" +
-    "  </nav>\n" +
-    "</header>"
   );
 
 }]);

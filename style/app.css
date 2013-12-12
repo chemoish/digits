@@ -27,6 +27,39 @@ h1 {
   color: #bcbcbc;
   text-align: center;
 }
+button,
+.button {
+  background-color: #a5c88f;
+  border: 0;
+  border-color: #a5c88f;
+}
+button:hover,
+.button:hover {
+  border: 0;
+}
+label.error,
+.error label,
+.error label.error {
+  color: #ef847b;
+}
+.error > small,
+.error small.error {
+  background: #ef847b;
+}
+.actions .button:first-child {
+  margin-right: 5px;
+}
+.panel h1,
+.panel h2,
+.panel h3,
+.panel h4,
+.panel h5,
+.panel h6 {
+  color: #8cbeb2;
+}
+.panel .subtitle {
+  color: #bcbcbc;
+}
 header {
   padding: 20px 0;
 }
@@ -66,39 +99,6 @@ footer> .row {
 }
 .copyright {
   font-size: 12px;
-}
-button,
-.button {
-  background-color: #a5c88f;
-  border: 0;
-  border-color: #a5c88f;
-}
-button:hover,
-.button:hover {
-  border: 0;
-}
-label.error,
-.error label,
-.error label.error {
-  color: #ef847b;
-}
-.error > small,
-.error small.error {
-  background: #ef847b;
-}
-.actions .button:first-child {
-  margin-right: 5px;
-}
-.panel h1,
-.panel h2,
-.panel h3,
-.panel h4,
-.panel h5,
-.panel h6 {
-  color: #8cbeb2;
-}
-.panel .subtitle {
-  color: #bcbcbc;
 }
 .callout {
   border-bottom: 20px solid #a5c88f;
