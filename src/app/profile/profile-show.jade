@@ -1,109 +1,109 @@
 .row
-  .small-12.columns
-    a.button.tiny.right(
-      href="#edit-profile/{{profile.id}}"
-    ) Edit
+  .columns
+    h2 Profile <small><a href="#edit-profile/{{profile.id}}">{{profile.name}}</a></small>
+    p.subtitle All changes are automagically saved!
 
-    h1 Profile <small>{{profile.name}}</small>
+    blockquote
+      {{profile.description}} <cite>You</cite>
 
-    .panel
-      dl
-        dt Notes
-        dd {{profile.description}}
+form(
+  id="profile_show_form"
+  name="profile_show_form"
+  novalidate
+)
+  .row
+    .columns
+      label Jacket size
+        | &nbsp;
+        small (also includes overcoats and raincoat)
 
-.row
-  .small-6.columns
-    label Jacket size
-      | &nbsp;
-      small (also includes overcoats and raincoat)
-    select(
-      ng-model="profile.sizes.jacket"
-      ng-options="size for size in enum.SIZES"
-    )
-      option(value="") Select a size
+      select(
+        ng-model="profile.sizes.jacket"
+        ng-options="size for size in enum.SIZES"
+      )
+        option(value="") Select a size
 
-    label Shirt size
-      | &nbsp;
-      small (also includes sweater and polo)
+      label Shirt size
+        | &nbsp;
+        small (also includes sweater and polo)
 
-    select(
-      ng-model="profile.sizes.shirt"
-      ng-options="size for size in enum.SIZES"
-    )
-      option(value="") Select a size
+      select(
+        ng-model="profile.sizes.shirt"
+        ng-options="size for size in enum.SIZES"
+      )
+        option(value="") Select a size
 
-    div(ng-switch="profile.gender")
-      div(ng-switch-when="male")
-        label Chest
+      div(ng-switch="profile.gender")
+        div(ng-switch-when="male")
+          label Chest
 
-        input(
-          placeholder="Chest"
-          type="text"
-          ng-model="profile.sizes.chest"
-        )
+          input(
+            placeholder="Chest"
+            type="text"
+            ng-model="profile.sizes.chest"
+          )
 
-      div(ng-switch-when="female")
-        label Bust
+        div(ng-switch-when="female")
+          label Bust
 
-        input(
-          placeholder="Bust"
-          type="text"
-          ng-model="profile.sizes.bust"
-        )
+          input(
+            placeholder="Bust"
+            type="text"
+            ng-model="profile.sizes.bust"
+          )
 
-    label Waist
+      label Waist
 
-    input(
-      placeholder="Waist"
-      type="text"
-      ng-model="profile.sizes.waist"
-    )
+      input(
+        placeholder="Waist"
+        type="text"
+        ng-model="profile.sizes.waist"
+      )
 
-    label Inseam
+      label Inseam
 
-    input(
-      placeholder="Inseam"
-      type="text"
-      ng-model="profile.sizes.inseam"
-    )
+      input(
+        placeholder="Inseam"
+        type="text"
+        ng-model="profile.sizes.inseam"
+      )
 
-  .small-6.columns
-    label Shoe
+      label Shoe
 
-    input(
-      placeholder="Shoe"
-      type="text"
-      ng-model="profile.sizes.shoe"
-    )
+      input(
+        placeholder="Shoe"
+        type="text"
+        ng-model="profile.sizes.shoe"
+      )
 
-    label Hat
+      label Hat
 
-    input(
-      placeholder="Hat"
-      type="text"
-      ng-model="profile.sizes.hat"
-    )
+      input(
+        placeholder="Hat"
+        type="text"
+        ng-model="profile.sizes.hat"
+      )
 
-    label Gloves
+      label Gloves
 
-    select(
-      ng-model="profile.sizes.glove"
-      ng-options="size for size in enum.SIZES"
-    )
-      option(value="") Select a size
+      select(
+        ng-model="profile.sizes.glove"
+        ng-options="size for size in enum.SIZES"
+      )
+        option(value="") Select a size
 
-    label Ring
+      label Ring
 
-    input(
-      placeholder="Ring"
-      type="text"
-      ng-model="profile.sizes.ring"
-    )
+      input(
+        placeholder="Ring"
+        type="text"
+        ng-model="profile.sizes.ring"
+      )
 
-    label Bracelet
+      label Bracelet
 
-    input(
-      placeholder="Bracelet"
-      type="text"
-      ng-model="profile.sizes.bracelet"
-    )
+      input(
+        placeholder="Bracelet"
+        type="text"
+        ng-model="profile.sizes.bracelet"
+      )

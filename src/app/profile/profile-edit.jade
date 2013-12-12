@@ -1,95 +1,89 @@
 .row
-  .small-12.columns
-    button.button.alert.tiny.right(
-      ng-click="deleteProfile()"
-    ) Delete
+  .columns
+    h2 Edit Profile <small>{{profile.name}}</small>
 
-    h1 Edit Profile <small>{{profile.name}}</small>
-
-.row
-  .small-4.columns
-    div(style="height: 200px; background-color: #666")
-      | img or something
-
-  .small-8.columns
-    form(
-      id="profile_add_form"
-      name="profile_add_form"
-      novalidate
-      ng-submit="saveProfile()"
+form(
+  id="profile_add_form"
+  name="profile_add_form"
+  novalidate
+  ng-submit="saveProfile()"
+)
+  .row
+    .columns(
+      ng-class="{'error': hasFieldError('name')}"
     )
-      .row
-        .small-12.columns(
-          ng-class="{'error': hasFieldError('name')}"
-        )
-          label(
-            for="name"
-          ) Name <small>required</small>
+      label(
+        for="name"
+      ) Name <small>required</small>
 
-          input(
-            id="profile_add_name"
-            name="name"
-            placeholder="Name"
-            required
-            type="text"
-            ng-model="profile.name"
-          )
+      input(
+        id="profile_add_name"
+        name="name"
+        placeholder="Name"
+        required
+        type="text"
+        ng-model="profile.name"
+      )
 
-          small.error(
-            ng-show="hasFieldError('name')"
-          ) Please enter a name
+      small.error(
+        ng-show="hasFieldError('name')"
+      ) Please enter a name
 
-      .row
-        .small-12.columns
-          label(
-            for="profile_add_description"
-          ) Note
+  .row
+    .columns
+      label(
+        for="profile_add_description"
+      ) Note
 
-          textarea(
-            id="profile_add_description"
-            name="profile_add_description"
-            placeholder="Description"
-            ng-model="profile.description"
-          )
+      textarea(
+        id="profile_add_description"
+        name="profile_add_description"
+        placeholder="Description"
+        ng-model="profile.description"
+      )
 
-      .row
-        .small-12.columns
-          label Gender <small>required</small>
+  .row
+    .columns
+      label Gender <small>required</small>
 
-          input(
-            id="profile_add_gender_male"
-            name="gender"
-            required
-            type="radio"
-            value="male"
-            ng-model="profile.gender"
-          )
+      input(
+        id="profile_add_gender_male"
+        name="gender"
+        required
+        type="radio"
+        value="male"
+        ng-model="profile.gender"
+      )
 
-          label(
-            for="profile_add_gender_male"
-            ng-class="{'error': hasFieldError('gender')}"
-          ) Male
+      label(
+        for="profile_add_gender_male"
+        ng-class="{'error': hasFieldError('gender')}"
+      ) Male
 
-          input(
-            id="profile_add_gender_female"
-            name="gender"
-            required
-            type="radio"
-            value="female"
-            ng-model="profile.gender"
-          )
+      input(
+        id="profile_add_gender_female"
+        name="gender"
+        required
+        type="radio"
+        value="female"
+        ng-model="profile.gender"
+      )
 
-          label(
-            for="profile_add_gender_female"
-            ng-class="{'error': hasFieldError('gender')}"
-          ) Female
+      label(
+        for="profile_add_gender_female"
+        ng-class="{'error': hasFieldError('gender')}"
+      ) Female
 
-      .row
-        .small-12.columns
-          button.button.tiny(
-            type="submit"
-          ) Save
+  .row
+    .columns.actions
+      button.button.tiny(
+        type="submit"
+      ) Save
 
-          a.button.secondary.tiny(
-            href="#profile/{{profile.id}}"
-          ) Cancel
+      a.button.secondary.tiny(
+        href="#profile/{{profile.id}}"
+      ) Cancel
+
+      button.button.alert.tiny.right(
+        ng-click="deleteProfile()"
+      ) Delete

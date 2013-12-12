@@ -1,11 +1,17 @@
 header(
   ng-controller="HeaderController"
 )
+  .brand
+    a.logo(href="/")
+      i.fa.fa-lightbulb-o
+
+      h1 Digits
+      p.subtitle Taking the guesswork out of shopping.
+
   nav.tab-bar
     section.left-small
       a.left-off-canvas-toggle.menu-icon
         span
 
-    section.right.tab-bar-section
-      h1
-        a#brand(href="/") {{title}}
+    section.middle.tab-bar-section
+      | Menu
