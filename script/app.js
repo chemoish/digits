@@ -245,18 +245,22 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('home/home.html',
     "\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"small-12 columns\">\n" +
-    "    <h2>Gimme yo digits!</h2>\n" +
-    "    <p class=\"subtitle\">Manage the sizes of all your loved ones, effortlessly, through one simple app.</p>\n" +
-    "    <div class=\"callout\">\n" +
-    "      shopping<br />\n" +
-    "      made easy!\n" +
+    "  <div class=\"columns\">\n" +
+    "    <div class=\"slat intro\">\n" +
+    "      <h2>Gimme yo digits!</h2>\n" +
+    "      <p class=\"subtitle\">Manage the sizes of all your loved ones, effortlessly, through one simple app.</p>\n" +
     "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<div class=\"row\">\n" +
-    "  <div class=\"columns\">\n" +
-    "    <section class=\"panel\">\n" +
+    "  <div class=\"large-4 columns\">\n" +
+    "    <div class=\"babble babble-faux-img\">\n" +
+    "      shopping<br />\n" +
+    "      made easy!\n" +
+    "    </div>\n" +
+    "  </div>\n" +
+    "  <div class=\"large-4 columns\">\n" +
+    "    <section class=\"panel babble\">\n" +
     "      <h2>Features</h2>\n" +
     "      <p class=\"subtitle\">Truely a man's best friend&hellip;</p>\n" +
     "      <ul class=\"square\">\n" +
@@ -267,11 +271,11 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "      </ul>\n" +
     "    </section>\n" +
     "  </div>\n" +
-    "  <div class=\"columns\">\n" +
-    "    <section class=\"panel\">\n" +
+    "  <div class=\"large-4 columns\">\n" +
+    "    <section class=\"panel babble\">\n" +
     "      <h2>Compatibility</h2>\n" +
     "      <p class=\"subtitle\">Works on&hellip;</p>\n" +
-    "      <ul class=\"no-bullet\">\n" +
+    "      <ul class=\"square\">\n" +
     "        <li><i class=\"fa fa-mobile\"></i>&nbsp;\n" +
     "          Mobile\n" +
     "        </li>\n" +
@@ -307,10 +311,6 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "  <div class=\"brand\"><a href=\"#\" class=\"logo\"><i class=\"fa fa-lightbulb-o\"></i>\n" +
     "      <h1>Digits</h1>\n" +
     "      <p class=\"subtitle\">Taking the guesswork out of shopping.</p></a></div>\n" +
-    "  <nav class=\"tab-bar\">\n" +
-    "    <section class=\"left-small\"><a class=\"left-off-canvas-toggle menu-icon\"><span></span></a></section>\n" +
-    "    <section class=\"middle tab-bar-section\">Menu</section>\n" +
-    "  </nav>\n" +
     "</header>"
   );
 
@@ -318,19 +318,44 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('navigation/_navigation.html',
     "\n" +
     "<div ng-controller=\"navigationController\" class=\"nav\">\n" +
-    "  <aside class=\"left-off-canvas-menu\">\n" +
-    "    <ul class=\"off-canvas-list\">\n" +
-    "      <li><a href=\"#\"><i class=\"fa fa-home\"></i>&nbsp;\n" +
-    "          Home</a></li>\n" +
-    "      <li><a href=\"#add-profile\"><i class=\"fa fa-plus-square\"></i>&nbsp;\n" +
-    "          Profile</a></li>\n" +
-    "      <li>\n" +
-    "        <label>Profiles</label>\n" +
-    "      </li>\n" +
-    "      <li ng-repeat=\"profile in profiles\"><a href=\"#profile/{{profile.id}}\"><i ng-class=\"{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}\" class=\"fa\"></i>&nbsp;\n" +
-    "          {{profile.name}}</a></li>\n" +
-    "    </ul>\n" +
-    "  </aside>\n" +
+    "  <nav data-topbar=\"data-topbar\" class=\"top-bar hide-for-small-only\">\n" +
+    "    <div class=\"top-bar-section\">\n" +
+    "      <ul class=\"right\">\n" +
+    "        <li class=\"divider\"></li>\n" +
+    "        <li class=\"has-dropdown not-click\"><a>Profiles</a>\n" +
+    "          <ul class=\"dropdown\">\n" +
+    "            <li><a href=\"#add-profile\"><i class=\"fa fa-plus-square\"></i>&nbsp;\n" +
+    "                Profile</a></li>\n" +
+    "            <li ng-repeat=\"profile in profiles\"><a href=\"#profile/{{profile.id}}\"><i ng-class=\"{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}\" class=\"fa\"></i>&nbsp;\n" +
+    "                {{profile.name}}</a></li>\n" +
+    "          </ul>\n" +
+    "        </li>\n" +
+    "      </ul>\n" +
+    "      <ul class=\"left\">\n" +
+    "        <li><a href=\"#\"><i class=\"fa fa-home\"></i>&nbsp;\n" +
+    "            Home</a></li>\n" +
+    "      </ul>\n" +
+    "    </div>\n" +
+    "  </nav>\n" +
+    "  <nav class=\"tab-bar hide-for-medium-up\">\n" +
+    "    <section class=\"left-small\"><a class=\"left-off-canvas-toggle menu-icon\"><span></span></a></section>\n" +
+    "    <section class=\"middle tab-bar-section\">Menu</section>\n" +
+    "  </nav>\n" +
+    "  <div class=\"nav\">\n" +
+    "    <aside class=\"left-off-canvas-menu\">\n" +
+    "      <ul class=\"off-canvas-list\">\n" +
+    "        <li><a href=\"#\"><i class=\"fa fa-home\"></i>&nbsp;\n" +
+    "            Home</a></li>\n" +
+    "        <li><a href=\"#add-profile\"><i class=\"fa fa-plus-square\"></i>&nbsp;\n" +
+    "            Profile</a></li>\n" +
+    "        <li>\n" +
+    "          <label>Profiles</label>\n" +
+    "        </li>\n" +
+    "        <li ng-repeat=\"profile in profiles\"><a href=\"#profile/{{profile.id}}\"><i ng-class=\"{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}\" class=\"fa\"></i>&nbsp;\n" +
+    "            {{profile.name}}</a></li>\n" +
+    "      </ul>\n" +
+    "    </aside>\n" +
+    "  </div>\n" +
     "</div>"
   );
 
@@ -339,7 +364,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"columns\">\n" +
-    "    <h2>Add Profile</h2>\n" +
+    "    <div class=\"slat\">\n" +
+    "      <h2>Add Profile</h2>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<form id=\"profile_add_form\" name=\"profile_add_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
@@ -378,7 +405,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"columns\">\n" +
-    "    <h2>Edit Profile <small>{{profile.name}}</small></h2>\n" +
+    "    <div class=\"slat\">\n" +
+    "      <h2>Edit Profile <small>{{profile.name}}</small></h2>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<form id=\"profile_edit_form\" name=\"profile_edit_form\" novalidate=\"novalidate\" ng-submit=\"saveProfile()\">\n" +
@@ -417,9 +446,11 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "<div class=\"row\">\n" +
     "  <div class=\"columns\">\n" +
-    "    <h2>Profile <small><a href=\"#edit-profile/{{profile.id}}\">{{profile.name}}</a></small></h2>\n" +
-    "    <p class=\"subtitle\">All changes are automagically saved!</p>\n" +
-    "    <blockquote>{{profile.description}} <cite>You</cite></blockquote>\n" +
+    "    <div class=\"slat\">\n" +
+    "      <h2>Profile <small><a href=\"#edit-profile/{{profile.id}}\">{{profile.name}}</a></small></h2>\n" +
+    "      <p class=\"subtitle\">All changes are automagically saved!</p>\n" +
+    "      <blockquote>{{profile.description || '&hellip;' }} <cite>You</cite></blockquote>\n" +
+    "    </div>\n" +
     "  </div>\n" +
     "</div>\n" +
     "<form id=\"profile_show_form\" name=\"profile_show_form\" novalidate=\"novalidate\">\n" +
