@@ -1,7 +1,13 @@
 div.nav(ng-controller="navigationController")
   nav.top-bar.hide-for-small-only(data-topbar)
     .top-bar-section
-      ul.right
+      ul.left
+        li
+          a(href="#")
+            i.fa.fa-home
+            | &nbsp;
+            | Home
+
         li.divider
         li.has-dropdown.not-click
           a Profiles
@@ -22,13 +28,6 @@ div.nav(ng-controller="navigationController")
                 )
                 | &nbsp;
                 | {{profile.name}}
-
-      ul.left
-        li
-          a(href="#")
-            i.fa.fa-home
-            | &nbsp;
-            | Home
 
   nav.tab-bar.hide-for-medium-up
     section.left-small
