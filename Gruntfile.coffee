@@ -79,6 +79,8 @@ module.exports = (grunt) ->
       prod:
         files: '<%= stylus.dev.files %>'
         options:
+          import: '<%= stylus.dev.options.import %>'
+          paths: '<%= stylus.dev.options.paths %>'
           urlfunc: '<%= stylus.dev.options.urlfunc %>'
 
     clean:
