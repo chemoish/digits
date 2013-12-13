@@ -61,7 +61,7 @@ module.exports = (grunt) ->
             'src/style/app.styl'
 
             # include feature styles
-            'src/app/**/*.styl'
+            'src/app/**/index.styl'
           ]
         ]
         options:
