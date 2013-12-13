@@ -56,10 +56,25 @@ module.exports = (grunt) ->
       dev:
         files: [
           dest: 'dist/style/app.css'
-          src: 'src/style/app.styl'
+          src: [
+            # include base styles
+            'src/style/app.styl'
+
+            # include feature styles
+            'src/app/**/*.styl'
+          ]
         ]
         options:
-          compress: false
+          cmpress: false
+          import: [
+            'nib'
+
+            # feature variable access
+            'variable'
+          ]
+          paths: [
+            'src/style'
+          ]
           urlfunc: 'url'
       prod:
         files: '<%= stylus.dev.files %>'
