@@ -91,6 +91,22 @@ module.exports = (grunt) ->
           ]
         ]
 
+      prod:
+        files: [
+          dest: 'dist/style/vendor.css'
+          src: [
+            'vendor/bower/foundation/css/foundation.min.css'
+            'vendor/bower/font-awesome/css/font-awesome.min.css'
+          ]
+        ,
+          dest: 'dist/script/vendor.js',
+          src: [
+            'vendor/bower/jQuery/jquery.min.js'
+            'vendor/bower/angular/angular.min.js'
+            'vendor/bower/foundation/js/foundation.min.js'
+          ]
+        ]
+
       scripts:
         files: [
           dest: 'dist/script/app.js'
@@ -201,13 +217,13 @@ module.exports = (grunt) ->
     'jade:prod'
     'ngtemplates:app'
     'stylus:prod'
-    'concat:dev'
+    'concat:prod'
     'concat:scripts'
     'copy:dev'
     'uglify:prod'
   ]
 
   grunt.registerTask 'pages', 'Running pages tasks...', [
-    'build:dev'
+    'build:prod'
     'gh-pages'
   ]
