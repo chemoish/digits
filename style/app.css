@@ -14,21 +14,42 @@ label.error,.error label,.error label.error{color:#ef847b}
 .panel .subtitle{color:#bcbcbc}
 .babble{min-height:240px;}
 @media only screen and (min-width: 1025px){.babble{min-height:260px}
-}.babble-faux-img{border-bottom:20px solid #a5c88f;border-top:1px solid #a5c88f;color:#a5c88f;font-size:55px;-webkit-font-smoothing:antialiased;margin-bottom:20px;padding-top:100px;}
+}.babble-faux-img{border-bottom:20px solid #a5c88f;border-top:1px solid #a5c88f;color:#a5c88f;font-size:55px;font-smoothing:antialiased;margin-bottom:20px;padding-top:100px;}
 @media only screen and (min-width: 1025px){.babble-faux-img{padding-top:120px}
 }.slat{margin:40px 0;}
 .slat a{border-bottom:1px dotted #5c4b51;}
 .slat a:hover{border-bottom:1px dotted #ef847b}
-header{margin:20px 0;}
-header h1{color:#222}
-header a:hover{border-bottom:1px dotted #ef847b}
-.logo{font-size:24px}
-.brand{text-align:center}
-footer{background-color:#333;color:#fff;padding:20px 0;margin:40px 0;}
+
+
+
+footer{background-color:#333;color:$white;padding:20px 0;margin:40px 0;}
 footer .brand{color:#f5f5f5}
 footer .inline-list{font-size:14px;margin-bottom:10px}
 footer p{margin-bottom:0}
-footer a{border-bottom:1px dotted #5c4b51;}
-footer a:hover{border-bottom:1px dotted #ef847b}
+footer a{border-bottom:1px dotted $red;}
+footer a:hover{border-bottom:1px dotted $pink}
 footer> .row{max-width:100%}
 .copyright{font-size:12px}
+
+header{margin:20px 0;}
+header h1{color:$black}
+header a:hover{border-bottom:1px dotted $pink}
+.logo{font-size:24px}
+.brand{text-align:center}
+
+header{margin:20px 0;}
+header h1{color:$black}
+header a:hover{border-bottom:1px dotted $pink}
+.logo{font-size:24px}
+.brand{text-align:center}
+footer{background-color:#333;color:$white;padding:20px 0;margin:40px 0;}
+footer .brand{color:#f5f5f5}
+footer .inline-list{font-size:14px;margin-bottom:10px}
+footer p{margin-bottom:0}
+footer a{border-bottom:1px dotted $red;}
+footer a:hover{border-bottom:1px dotted $pink}
+footer> .row{max-width:100%}
+.copyright{font-size:12px}
+
+
+
