@@ -1,8 +1,17 @@
 button
 .button
   background-color $green
-  border           0
   border-color     $green
 
   &:hover
-    border 0
+  &:focus
+    background-color darken($green, 40%)
+
+button.alert
+.button.alert
+  background-color $pink
+  border-color     $pink
+
+  &:hover
+  &:focus
+    background-color darken($pink, 30%)

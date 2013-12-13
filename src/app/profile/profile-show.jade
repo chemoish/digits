@@ -1,10 +1,12 @@
 .row
   .columns
-    h2 Profile <small><a href="#edit-profile/{{profile.id}}">{{profile.name}}</a></small>
-    p.subtitle All changes are automagically saved!
+    .slat
+      h2 Profile <small><a href="#edit-profile/{{profile.id}}">{{profile.name}}</a></small>
+      p.subtitle All changes are automagically saved!
 
-    blockquote
-      {{profile.description}} <cite>You</cite>
+      blockquote
+        {{profile.description || '&hellip;' }} <cite>You</cite>
+
 
 form(
   id="profile_show_form"

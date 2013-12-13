@@ -1,27 +1,67 @@
-.nav(ng-controller="navigationController")
-  aside.left-off-canvas-menu
-    ul.off-canvas-list
-      li
-        a(href="#")
-          i.fa.fa-home
-          | &nbsp;
-          | Home
+div.nav(ng-controller="navigationController")
+  nav.top-bar.hide-for-small-only(data-topbar)
+    .top-bar-section
+      ul.right
+        li.divider
+        li.has-dropdown.not-click
+          a Profiles
 
-      li
-        a(href="#add-profile")
-          i.fa.fa-plus-square
-          | &nbsp;
-          | Profile
+          ul.dropdown
+            li
+              a(href="#add-profile")
+                i.fa.fa-plus-square
+                | &nbsp;
+                | Profile
 
-      li
-        label Profiles
+            li(
+              ng-repeat="profile in profiles"
+            )
+              a(href="#profile/{{profile.id}}")
+                i.fa(
+                  ng-class="{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}"
+                )
+                | &nbsp;
+                | {{profile.name}}
 
-      li(
-        ng-repeat="profile in profiles"
-      )
-        a(href="#profile/{{profile.id}}")
-          i.fa(
-            ng-class="{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}"
-          )
-          | &nbsp;
-          | {{profile.name}}
+      ul.left
+        li
+          a(href="#")
+            i.fa.fa-home
+            | &nbsp;
+            | Home
+
+  nav.tab-bar.hide-for-medium-up
+    section.left-small
+      a.left-off-canvas-toggle.menu-icon
+        span
+
+    section.middle.tab-bar-section
+      | Menu
+
+  .nav
+    aside.left-off-canvas-menu
+      ul.off-canvas-list
+        li
+          a(href="#")
+            i.fa.fa-home
+            | &nbsp;
+            | Home
+
+        li
+          a(href="#add-profile")
+            i.fa.fa-plus-square
+            | &nbsp;
+            | Profile
+
+        li
+          label Profiles
+
+        li(
+          ng-repeat="profile in profiles"
+        )
+          a(href="#profile/{{profile.id}}")
+            i.fa(
+              ng-class="{'fa-female': profile.gender == 'female', 'fa-male': profile.gender == 'male'}"
+            )
+            | &nbsp;
+            | {{profile.name}}
