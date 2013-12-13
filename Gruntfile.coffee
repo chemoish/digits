@@ -145,6 +145,18 @@ module.exports = (grunt) ->
       dev:
         files: [
           cwd: 'src'
+          dest: 'dist/asset/'
+          expand: true
+          flatten: true
+          src: 'asset/**/*'
+        ,
+          cwd: 'src'
+          dest: 'dist/fonts/'
+          expand: true
+          flatten: true
+          src: 'font/**/*'
+        ,
+          cwd: 'src'
           dest: 'dist/img/'
           expand: true
           flatten: true
