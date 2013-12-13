@@ -65,7 +65,7 @@ module.exports = (grunt) ->
           ]
         ]
         options:
-          cmpress: false
+          compress: false
           import: [
             'nib'
 
