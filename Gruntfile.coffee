@@ -17,6 +17,8 @@ module.exports = (grunt) ->
     coffee:
       dev:
         dest: 'tmp/app.js'
+        options:
+          join: true
         src: [
           'src/app/app.coffee'
           'src/app/**/*.coffee'
